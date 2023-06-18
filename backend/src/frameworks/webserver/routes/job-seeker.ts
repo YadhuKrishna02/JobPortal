@@ -4,7 +4,8 @@ import { userProfileDb } from '../../database/mongoDB/repositories/userProfile';
 import { profileDbInterface } from '../../../application/repositories/userProfileInterface';
 import { applicantDbInterface } from '../../../application/repositories/applicantDbInterface';
 import { applicantDB } from '../../database/mongoDB/repositories/applicantDB';
-// import parser from '../middlewares/cloudinaryConfig';
+import { jobDbInterface } from '../../../application/repositories/jobDbInterface';
+import { jobDB } from '../../database/mongoDB/repositories/jobDB';
 import upload from '../middlewares/cloudinaryConfig';
 
 const userRouter = () => {
@@ -14,7 +15,9 @@ const userRouter = () => {
     profileDbInterface,
     userProfileDb,
     applicantDbInterface,
-    applicantDB
+    applicantDB,
+    jobDbInterface,
+    jobDB
   );
 
   router.post('/add_profile', controller.addProfile);
@@ -24,6 +27,8 @@ const userRouter = () => {
   router.post('/apply_job/', controller.applyJob);
 
   router.get('/applied_jobs/:profileId', controller.getAppliedJobs);
+
+  router.get('/all_jobs', controller.allJobs);
 
   return router;
 };

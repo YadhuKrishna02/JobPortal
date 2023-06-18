@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { useState } from 'react';
+import { format } from 'timeago.js';
+
 import {
   Container,
   Typography,
@@ -11,10 +13,14 @@ import {
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import DescriptionIcon from '@material-ui/icons/Description';
+import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    backgroundColor: '#F8F8F8', // Off-white color
+    backgroundColor: '#fff', // Off-white color
     padding: theme.spacing(2),
     marginBottom: theme.spacing(2),
     display: 'flex',
@@ -23,17 +29,16 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(1),
     width: '100%',
     position: 'relative',
+    [theme.breakpoints.up('sm')]: {
+      width: '40%',
+    },
   },
   logo: {
     marginRight: theme.spacing(2),
     width: theme.spacing(6),
     height: theme.spacing(6),
   },
-  jobTitleContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: theme.spacing(1),
-  },
+
   jobTitle: {
     fontWeight: 'bold',
     color: '#333', // Text color #333
@@ -49,12 +54,9 @@ const useStyles = makeStyles((theme) => ({
     gap: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
-  chip: {
-    backgroundColor: theme.palette.primary.main, // Set primary blue color
-    color: theme.palette.primary.contrastText,
-  },
+
   salary: {
-    color: theme.palette.success.main,
+    // color: theme.palette.success.main,
   },
   buttons: {
     position: 'absolute',
@@ -62,24 +64,15 @@ const useStyles = makeStyles((theme) => ({
     right: theme.spacing(1),
   },
   applyButton: {
-    color: theme.palette.primary.main,
+    // color: theme.palette.primary.main,
     marginRight: theme.spacing(1),
   },
   deleteButton: {
     color: theme.palette.error.main,
   },
-  visibilityButton: {
-    color: theme.palette.primary.main,
-    paddingLeft: '30px',
-    paddingRight: '30px',
-  },
-  visibilityIcon: {
-    marginRight: theme.spacing(1),
-  },
 }));
 
 const JobContainer = ({
-  companyLogo,
   requiredSkills,
   jobTitle,
   jobDescription,
@@ -87,6 +80,7 @@ const JobContainer = ({
   jobLocation,
   onApplicantsClick,
   jobId,
+  timeAgo,
 }) => {
   const classes = useStyles();
   const handleApplyClick = () => {
@@ -96,19 +90,21 @@ const JobContainer = ({
   return (
     <>
       <Container maxWidth="md" className={classes.container}>
-        <Avatar alt="Company Logo" src={companyLogo} className={classes.logo} />
+        <Avatar alt="Company Logo" className={classes.logo} />
         <Grid container direction="column" spacing={2}>
           <Grid item className={classes.jobTitleContainer}>
             <Typography variant="h6" className={classes.jobTitle}>
               {jobTitle}
             </Typography>
-            <Typography variant="body2" className={classes.location}>
-              {jobLocation}
-            </Typography>
           </Grid>
           <Grid item className={classes.jobTitleContainer}>
-            <Typography variant="h6" className={classes.jobTitle}>
-              {companyLogo}
+            <Typography
+              variant="body2"
+              className={classes.location}
+              style={{ color: '#777585' }}
+            >
+              <LocationOnIcon />
+              {jobLocation}
             </Typography>
           </Grid>
           <Grid item className={classes.skills}>
@@ -117,20 +113,61 @@ const JobContainer = ({
                 key={index}
                 label={skill}
                 variant="outlined"
-                className={classes.chip}
+                style={{
+                  backgroundColor: '#F4F4F5',
+                  height: '1.5rem',
+                  color: '#777585',
+                }}
                 clickable={false}
               />
             ))}
           </Grid>
           <Grid item>
-            <Typography variant="body1" color="textSecondary">
+            <Typography
+              style={{
+                color: '#777585',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              variant="body1"
+            >
+              <DescriptionIcon style={{ marginRight: '0.5rem' }} />
               {jobDescription}
             </Typography>
           </Grid>
           <Grid item>
-            <Typography variant="body2" className={classes.salary}>
+            <Typography
+              style={{
+                color: '#777585',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              variant="body2"
+              className={classes.salary}
+            >
+              <MonetizationOnIcon
+                className={classes.icon}
+                style={{ marginRight: '0.5rem' }}
+              />
               <span className={classes.rupeeIcon}>₹</span>
               {salaryPackage}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography
+              style={{
+                color: '#777585',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+              variant="body2"
+              className={classes.salary}
+            >
+              <ScheduleIcon
+                className={classes.icon}
+                style={{ marginRight: '0.5rem' }}
+              />
+              <span>{format(timeAgo)}</span>
             </Typography>
           </Grid>
         </Grid>
@@ -147,11 +184,14 @@ const JobContainer = ({
         </div>
         <Button
           variant="contained"
-          startIcon={<VisibilityIcon className={classes.visibilityIcon} />}
+          startIcon={
+            <VisibilityIcon
+              // className={classes.visibilityIcon}
+              style={{ display: 'flex', justifyContent: 'center' }}
+            />
+          }
           className={classes.visibilityButton}
-        >
-          View Details
-        </Button>
+        ></Button>
       </Container>
     </>
   );
@@ -166,6 +206,7 @@ JobContainer.propTypes = {
   jobLocation: PropTypes.string.isRequired,
   applied: PropTypes.string.isRequired,
   jobId: PropTypes.string.isRequired,
+  timeAgo: PropTypes.string.isRequired,
   onApplicantsClick: PropTypes.func.isRequired,
 };
 

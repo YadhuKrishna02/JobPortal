@@ -1,5 +1,6 @@
 import Job from '../models/jobModel';
 import { JobInterface } from '../../../../types/jobInterface';
+import { AllJobs } from '../../../../application/use-cases/job/job';
 
 export const jobDB = () => {
   //add user
@@ -33,12 +34,18 @@ export const jobDB = () => {
 
     return applicants?.appliedUsers;
   };
+
+  const getAllJobs = async () => {
+    const jobList = await Job.find();
+    return jobList;
+  };
   return {
     addJob,
     getJob,
     editJob,
     deleteJob,
     getApplicants,
+    getAllJobs,
   };
 };
 

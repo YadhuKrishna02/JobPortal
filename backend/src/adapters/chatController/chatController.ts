@@ -1,29 +1,53 @@
-import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
-import { jobDB } from '../../frameworks/database/mongoDB/repositories/jobDB';
-import { JobInterface } from '../../types/jobInterface';
-import { createJob } from '../../application/use-cases/job/job';
-import { JobDbInterface } from '../../application/repositories/jobDbInterface';
-import { Types } from 'mongoose';
+import asyncHandler from 'express-async-handler';
+import { resolve } from 'path';
+import { chatDbInterfaceType } from '../../application/repositories/chatDbRepsitoryInterface';
+import { chatRepositoryType } from '../../frameworks/database/Mongodb/repositories/chatRepository';
+import {
+  chatCreate,
+  getAllChats,
+  getChat,
+} from '../../application/use-cases/chat/chat';
 
-const jobController = (jobInterface: JobDbInterface, jobDbImpl: jobDB) => {
-  const dbRepositoryJob = jobInterface(jobDbImpl());
+const chatController = (
+  chatDbInterface: chatDbInterfaceType,
+  chatDbImp: chatRepositoryType
+) => {
+  const dbRepositoryChat = chatDbInterface(chatDbImp());
 
-  //post job
-  const postJob = asyncHandler(async (req: Request, res: Response) => {
-    const jobDetails: JobInterface = req.body;
-    console.log(jobDetails, 'popopop');
-    const job = await createJob(jobDetails, dbRepositoryJob);
+  const createChat = asyncHandler(async (req: Request, res: Response) => {
+    console.log(req.body, 'bodddddddddddd');
+
+    const { senderId } = req.body;
+    const { receiverId } = req.body;
+    const newChat = await chatCreate(senderId, receiverId, dbRepositoryChat);
     res.json({
-      job,
       status: 'success',
-      message: 'new job created',
+      newChat,
+    });
+  });
+  const userChats = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const chats = await getAllChats(userId, dbRepositoryChat);
+    res.json({
+      status: 'success',
+      chats,
     });
   });
 
+  const findChat = asyncHandler(async (req: Request, res: Response) => {
+    const { firstId } = req.params;
+    const { secondId } = req.params;
+    const chat = await getChat(firstId, secondId, dbRepositoryChat);
+    res.json({
+      status: 'success',
+      chat,
+    });
+  });
   return {
-    postJob,
+    createChat,
+    userChats,
+    findChat,
   };
 };
-
-export default jobController;
+export default chatController;

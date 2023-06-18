@@ -15,9 +15,18 @@ export const recruiterDB = () => {
     });
     return recruiter;
   };
+
+  const getDetails = async (recId: string) => {
+    const recruiter = await Recruiter.findById(recId).populate('profileId');
+    console.log(recruiter, 'reccccc');
+    return recruiter;
+  };
   //add user
 
-  const addRecruiter = async (recruiter: recruiterInterface) => {
+  const addRecruiter = async (
+    recruiter: recruiterInterface,
+    profileId: string
+  ) => {
     return await Recruiter.create(recruiter);
   };
 
@@ -25,6 +34,7 @@ export const recruiterDB = () => {
     getRecruiterByMail,
     getRecruiterByName,
     addRecruiter,
+    getDetails,
   };
 };
 

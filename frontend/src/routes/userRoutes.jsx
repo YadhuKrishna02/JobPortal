@@ -7,6 +7,7 @@ import ProfilePage from '../pages/job-seeker/EditProfile';
 import ViewProfile from '../pages/job-seeker/Profile';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
+import ChatPage from '../pages/Chat/Chat';
 
 function UserRoutes() {
   const token = useSelector((state) => state?.users?.users?.token);
@@ -18,6 +19,10 @@ function UserRoutes() {
         <Route
           path="/profile"
           element={token ? <ViewProfile /> : <Navigate to="../" />}
+        />
+        <Route
+          path="/chat/"
+          element={token ? <ChatPage /> : <Navigate to="/" />}
         />
         <Route
           path="/edit_profile"

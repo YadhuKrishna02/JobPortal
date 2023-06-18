@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Container,
   Grid,
@@ -6,17 +6,50 @@ import {
   Chip,
   Button,
   Paper,
+  CircularProgress,
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getUsers } from '../../redux/chat/chatSlice';
 
 const ViewProfile = () => {
-  const profileData = useSelector((state) => state?.users?.profile);
+  const dispatch = useDispatch();
+  const profileId = useSelector((state) => state?.users?.users?.applicantId);
+  const [profileData, setProfileData] = useState(null);
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const profile = await dispatch(getUsers(profileId));
+        console.log(
+          profile?.payload?.data?.userProfile?.profileId,
+          'pro22222222'
+        );
+        setProfileData(profile?.payload?.data?.userProfile?.profileId);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserData();
+  }, [profileId, dispatch]);
 
   const handlePreviewResume = () => {
     window.open(profileData.resume, '_blank');
   };
+  if (!profileData) {
+    return (
+      <Container maxWidth="md" sx={{ py: 6 }}>
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+        >
+          <CircularProgress />
+        </Grid>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>

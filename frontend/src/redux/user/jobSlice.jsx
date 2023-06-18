@@ -18,8 +18,20 @@ export const ApplyJob = createAsyncThunk(
   }
 );
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const getAllJobs = createAsyncThunk('jobs/getAllJobs', async () => {
+  try {
+    const response = await userApi.get('/all_jobs');
+    console.log(response?.data?.jobs, 'deiiiiii');
+    return response?.data?.jobs;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 const initialState = {
   appliedJobs: {},
+  jobs: {},
   error: {},
 };
 
@@ -29,9 +41,9 @@ const appliedJobSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(ApplyJob.pending, (state) => {})
-      .addCase(ApplyJob.fulfilled, (state, { payload }) => {
-        console.log(payload, 'pppp');
-        console.log('Applied Job');
+      .addCase(ApplyJob.fulfilled, (state, { payload }) => {})
+      .addCase(getAllJobs.fulfilled, (state, { payload }) => {
+        state.jobs = payload;
       })
       .addCase(ApplyJob.rejected, (state, { error }) => {
         // state.error = error?.message || 'Unknown error occured';

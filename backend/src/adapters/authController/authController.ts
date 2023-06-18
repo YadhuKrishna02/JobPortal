@@ -1,7 +1,5 @@
 import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
-// import { GoogleAuthService } from '../../frameworks/services/googleAuthService';
-// import { GoogleAuthServiceInterface } from '../../application/services/googleAuthServiceInterface';
 import { UserDbInterface } from '../../application/repositories/userDbRepository';
 import { UserRepositoryMongoDB } from '../../frameworks/database/mongoDb/repositories/userRepositoryMongoDB';
 import { AuthService } from '../../frameworks/services/authService';
@@ -14,6 +12,10 @@ import { GoogleUserInteface } from '../../types/googleUserInterface';
 import { googleUserLogin } from '../../application/use-cases/auth/userAuth';
 import { userProfileDb } from '../../frameworks/database/mongoDB/repositories/userProfile';
 import { profileDbInterface } from '../../application/repositories/userProfileInterface';
+import { recProfileDbInterface } from '../../application/repositories/recruiterProfileInterface';
+import { recProfileDb } from '../../frameworks/database/mongoDB/repositories/recruiterProfile';
+import { recruiterDetails } from '../../application/use-cases/auth/userAuth';
+import { userDetails } from '../../application/use-cases/auth/userAuth';
 
 import {
   userRegister,
@@ -31,7 +33,9 @@ const authController = (
   recruiterDBImpl: recruiterDB,
   recruiterDBInterface: RecruiterDbInterface,
   userProfileInterface: profileDbInterface,
-  profileImplDb: userProfileDb
+  profileImplDb: userProfileDb,
+  recProfileInterface: recProfileDbInterface,
+  recProfileImpl: recProfileDb
   // googleAuthService: GoogleAuthService,
   // googleAuthServiceInterface: GoogleAuthServiceInterface
 ) => {
@@ -39,6 +43,7 @@ const authController = (
   const authService = authServiceInterface(authServiceImpl());
   const dbRepositoryRecruiter = recruiterDBInterface(recruiterDBImpl());
   const dbRepositoryProfile = userProfileInterface(profileImplDb());
+  const dbRepositoryRecProfile = recProfileInterface(recProfileImpl());
   // const googleAuthServices = googleAuthServiceInterface(googleAuthService());
 
   const registerUser = asyncHandler(async (req: Request, res: Response) => {
@@ -60,16 +65,17 @@ const authController = (
   const registerRecruiter = asyncHandler(
     async (req: Request, res: Response) => {
       const recruiter: recruiterInterface = req.body;
-      const { token, recruiterData } = await recruiterRegister(
+      const { token, profile, recruiterData } = await recruiterRegister(
         recruiter,
         dbRepositoryRecruiter,
-        authService
+        authService,
+        dbRepositoryRecProfile
       );
-      console.log(recruiterData, 'reccccccccc');
       res.json({
         status: 'success',
         message: 'new recruiter registered',
         token,
+        profile,
         recruiterData,
       });
     }
@@ -104,32 +110,25 @@ const authController = (
       dbRepositoryProfile,
       authService
     );
+    console.log(result, 'login-gogggggle');
 
     const token: string = result?.token;
 
     const profile: string = result?.profile;
     const applicantId: Types.ObjectId = result?.applicantId;
-    if (result?.token && result?.profile) {
-      res.json({
-        status: 'success',
-        message: 'user verified',
-        token,
-        profile,
-        applicantId,
-      });
-    } else {
-      const token = result;
-      res.json({
-        status: 'success',
-        message: 'user verified',
-        token,
-      });
-    }
+    console.log(applicantId, 'apppppppppp');
+    res.json({
+      status: 'success',
+      message: 'user verified',
+      token,
+      applicantId,
+      profile,
+    });
   });
 
   const loginRecruiter = asyncHandler(async (req: Request, res: Response) => {
     const { email, password }: { email: string; password: string } = req.body;
-    const token = await recruiterLogin(
+    const { token, recruiterData } = await recruiterLogin(
       email,
       password,
       dbRepositoryRecruiter,
@@ -139,12 +138,41 @@ const authController = (
       status: 'success',
       message: 'recruiter verified',
       token,
+      recruiterData,
+    });
+  });
+
+  //get details
+
+  const getDetails = asyncHandler(async (req: Request, res: Response) => {
+    const { recId } = req.params;
+    const recDetails: any = await recruiterDetails(
+      recId,
+      dbRepositoryRecruiter
+    );
+    res.json({
+      status: 'success',
+      message: 'fetched recruiter data successfully',
+      recDetails,
+    });
+  });
+  const getUserDetails = asyncHandler(async (req: Request, res: Response) => {
+    const { userProfId } = req.params;
+    const userProfile: any = await userDetails(userProfId, dbRepositoryUser);
+    console.log(userProfile, 'prooooo');
+
+    res.json({
+      status: 'success',
+      message: 'fetched job seeker data successfully',
+      userProfile,
     });
   });
 
   return {
     registerUser,
     registerRecruiter,
+    getDetails,
+    getUserDetails,
     loginUser,
     loginRecruiter,
     loginWithGoogle,

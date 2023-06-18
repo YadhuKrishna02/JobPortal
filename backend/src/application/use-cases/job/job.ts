@@ -70,3 +70,8 @@ export const ApplyJob = async (
   const applyJob = await applyJobRepository.addApplicant(applicantId, id);
   return applyJob;
 };
+
+export const AllJobs = async (jobRepository: ReturnType<JobDbInterface>) => {
+  const allJobs = await jobRepository.getAllJobs();
+  return allJobs;
+};

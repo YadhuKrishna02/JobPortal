@@ -1,23 +1,53 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Typography, CircularProgress } from '@material-ui/core';
 import JobContainer from './Cards';
 import SearchBar from './SearchBar';
 import Pagination from '@mui/material/Pagination';
-import { useDispatch } from 'react-redux';
-import { ApplyJob } from '../../redux/user/jobSlice';
+import { ApplyJob, getAllJobs } from '../../redux/user/jobSlice';
+import FilterModal from '../../components/Modals/FilterModal';
 
 const JobList = () => {
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(3);
   const [searchTerm, setSearchTerm] = useState('');
   const [timeoutId, setTimeoutId] = useState(null);
+  const [filteredJobs, setFilteredJobs] = useState([]);
 
   const [applying, setApplying] = useState(false); // Loading state for job application
 
-  const jobs = useSelector((state) => state.jobs.jobs);
   const applicantId = useSelector((state) => state?.users?.users?.profile?._id);
   const dispatch = useDispatch();
+
+  const jobs = useSelector((state) => state?.appliedJobs?.jobs);
+
+  useEffect(() => {
+    const getJobs = async () => {
+      try {
+        const response = await dispatch(getAllJobs());
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getJobs();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const filtered = jobs
+      .filter((job) => {
+        const { jobLocation, jobTitle, jobType } = job;
+        const searchLowercase = searchTerm.toLowerCase();
+        return (
+          jobLocation.toLowerCase().includes(searchLowercase) ||
+          jobTitle.toLowerCase().includes(searchLowercase) ||
+          jobType.toLowerCase().includes(searchLowercase)
+        );
+      })
+      .sort((a, b) => b._id.localeCompare(a._id));
+
+    setFilteredJobs(filtered);
+    setPage(1);
+  }, [jobs, searchTerm]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -33,24 +63,28 @@ const JobList = () => {
     clearTimeout(timeoutId);
     const newTimeoutId = setTimeout(() => {
       setSearchTerm(searchTerm.toLowerCase());
-      setPage(1);
     }, 500);
     setTimeoutId(newTimeoutId);
   };
 
-  const filteredJobs = [...jobs]
-    .sort((a, b) => {
-      return b.job._id.localeCompare(a.job._id);
-    })
-    .filter((job) => {
-      const { jobLocation, jobTitle, jobType } = job.job;
-      const searchLowercase = searchTerm.toLowerCase();
+  const handleFilter = (filters) => {
+    const { salary, location, jobTitle } = filters;
+
+    const filtered = jobs.filter((job) => {
+      const jobSalary = job.salary.toLowerCase();
+      const jobLocation = job.jobLocation.toLowerCase();
+      const jobTitleLowerCase = job.jobTitle.toLowerCase();
+
       return (
-        jobLocation.toLowerCase().includes(searchLowercase) ||
-        jobTitle.toLowerCase().includes(searchLowercase) ||
-        jobType.toLowerCase().includes(searchLowercase)
+        (salary === '' || jobSalary === salary) &&
+        (location === '' || jobLocation.includes(location.toLowerCase())) &&
+        (jobTitle === '' || jobTitleLowerCase.includes(jobTitle.toLowerCase()))
       );
     });
+
+    setFilteredJobs(filtered);
+    setPage(1);
+  };
 
   const displayJobs = filteredJobs.slice(
     (page - 1) * rowsPerPage,
@@ -62,6 +96,7 @@ const JobList = () => {
       <div style={{ marginBottom: '2rem' }}>
         <SearchBar placeholder="Search Jobs" onSearch={handleSearch} />
       </div>
+      <FilterModal onFilter={handleFilter} />
       {applying && ( // Show loading indicator while applying is true
         <div
           style={{
@@ -76,15 +111,15 @@ const JobList = () => {
       {displayJobs.length > 0 ? (
         displayJobs.map((job) => (
           <JobContainer
-            key={job.job._id}
-            companyLogo="logo"
-            jobLocation={job.job.jobLocation}
-            requiredSkills={job.job.skills}
-            jobTitle={job.job.jobTitle}
-            jobDescription={job.job.essentialKnowledge}
-            salaryPackage={job.job.salary}
+            key={job._id}
+            jobLocation={job.jobLocation}
+            requiredSkills={job.skills}
+            jobTitle={job.jobTitle}
+            jobDescription={job.essentialKnowledge}
+            salaryPackage={job.salary}
             onApplicantsClick={handleApply}
-            jobId={job.job._id}
+            jobId={job._id}
+            timeAgo={job.createdAt}
           />
         ))
       ) : (
@@ -92,7 +127,7 @@ const JobList = () => {
       )}
 
       <Pagination
-        count={Math.ceil(jobs.length / rowsPerPage)}
+        count={Math.ceil(filteredJobs.length / rowsPerPage)}
         page={page}
         onChange={handleChangePage}
         sx={{

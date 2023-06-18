@@ -29,6 +29,23 @@ export const loginRecruiter = createAsyncThunk(
   }
 );
 
+export const editProfile = createAsyncThunk(
+  'recruiters/editProfile',
+  async ({ profileId, payload }) => {
+    try {
+      console.log(profileId, payload, 'ssss');
+      const response = await recruiterApi.put(
+        `/edit_profile/${profileId}`,
+        payload
+      );
+      console.log(response, 'resss');
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const viewApplicants = createAsyncThunk(
   'recruiters/viewApplicants',
   async (jobId) => {

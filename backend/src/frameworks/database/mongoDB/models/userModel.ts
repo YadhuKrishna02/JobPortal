@@ -29,6 +29,7 @@ const userSchema = new Schema(
     },
     profileId: {
       type: String,
+      ref:'UserProfile'
     },
     // confirmationToken: {
     //   type: String,

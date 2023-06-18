@@ -9,6 +9,9 @@ import { applicantDbInterface } from '../../application/repositories/applicantDb
 import { applicantDB } from '../../frameworks/database/mongoDB/repositories/applicantDB';
 import { ApplyJob } from '../../application/use-cases/job/job';
 import { AppliedJobs } from '../../application/use-cases/job-seeker/editProfile';
+import { JobDbInterface } from '../../application/repositories/jobDbInterface';
+import { jobDB } from '../../frameworks/database/mongoDB/repositories/jobDB';
+import { AllJobs } from '../../application/use-cases/job/job';
 import cloudinary from 'cloudinary';
 import fs from 'fs';
 import mongoose, { Types } from 'mongoose';
@@ -17,10 +20,13 @@ const userController = (
   userProfileInterface: profileDbInterface,
   profileImplInterface: userProfileDb,
   applicantInterface: applicantDbInterface,
-  applicantDB: applicantDB
+  applicantDB: applicantDB,
+  jobDbInterface: JobDbInterface,
+  jobDbImpl: jobDB
 ) => {
   const dbRepositoryProfile = userProfileInterface(profileImplInterface());
   const applicantRepository = applicantInterface(applicantDB());
+  const jobRepository = jobDbInterface(jobDbImpl());
 
   //add profile
 
@@ -84,11 +90,25 @@ const userController = (
     });
   });
 
+  //get all jobs
+
+  const allJobs = asyncHandler(async (req: Request, res: Response) => {
+    const jobs = await AllJobs(jobRepository);
+    if (jobs.length > 0) {
+      res.json({
+        status: 'success',
+        message: 'jobs fetched successfully',
+        jobs,
+      });
+    }
+  });
+
   return {
     editProfile,
     addProfile,
     applyJob,
     getAppliedJobs,
+    allJobs,
   };
 };
 

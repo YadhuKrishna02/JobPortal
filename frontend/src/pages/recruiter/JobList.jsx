@@ -22,9 +22,11 @@ const JobPage = () => {
   const recruiterId = useSelector(
     (state) => state?.recruiters?.recruiters?.recruiterData?._id
   );
+  console.log(recruiterId, 'iddd');
   const jobs = useSelector((state) =>
     state?.jobs?.jobs.filter((job) => job?.job?.recruiterId === recruiterId)
   );
+  console.log(jobs, 'jjjjjjjj');
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(3);
   const [dialogOpen, setDialogOpen] = useState(false);

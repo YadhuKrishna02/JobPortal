@@ -9,6 +9,7 @@ import {
 } from '../../repositories/userDbRepository';
 import { RecruiterDbInterface } from '../../repositories/recruiterDbInterface';
 import { profileDbInterface } from '../../repositories/userProfileInterface';
+import { recProfileDbInterface } from '../../repositories/recruiterProfileInterface';
 import { GoogleUserInteface } from '../../../types/googleUserInterface';
 import { userRepositoryMongoDB } from '../../../frameworks/database/mongoDb/repositories/userRepositoryMongoDB';
 import { ObjectId, Types } from 'mongoose';
@@ -36,7 +37,7 @@ export const userRegister = async (
   const profile: any = await dbRepositoryProfile.addProfile(user);
   const createdUser: any = await userRepository.addUser(user, profile._id);
 
-  const applicantId: Types.ObjectId = createdUser._id;
+  const applicantId: Types.ObjectId = profile._id;
 
   const token = authService.generateToken(createdUser._id.toString());
   return { token, profile, applicantId };
@@ -51,7 +52,8 @@ export const recruiterRegister = async (
     password: string;
   },
   recruiterRepository: ReturnType<RecruiterDbInterface>,
-  authService: ReturnType<AuthServiceInterface>
+  authService: ReturnType<AuthServiceInterface>,
+  dbRepositoryRecProfile: ReturnType<recProfileDbInterface>
 ) => {
   recruiter.email = recruiter.email.toLowerCase();
   const isExistingEmail = await recruiterRepository.getRecruiterByMail(
@@ -69,9 +71,13 @@ export const recruiterRegister = async (
     throw new AppError('existing recruiter', HttpStatus.UNAUTHORIZED);
   }
   recruiter.password = await authService.encryptPassword(recruiter.password);
-  const recruiterData: any = await recruiterRepository.addRecruiter(recruiter);
+  const profile = await dbRepositoryRecProfile.addProfile(recruiter);
+  const recruiterData: any = await recruiterRepository.addRecruiter(
+    recruiter,
+    profile._id
+  );
   const token = authService.generateToken(recruiterData._id.toString());
-  return { token, recruiterData };
+  return { token, profile, recruiterData };
 };
 
 export const userLogin = async (
@@ -80,7 +86,7 @@ export const userLogin = async (
   userRepository: ReturnType<UserDbInterface>,
   authService: ReturnType<AuthServiceInterface>
 ) => {
-  const user: CreateUserInterface | null = await userRepository.getUserByEmail(
+  const user: CreateUserInterface | any = await userRepository.getUserByEmail(
     email
   );
 
@@ -98,6 +104,7 @@ export const userLogin = async (
     );
   }
   const token = authService.generateToken(user._id.toString());
+  // const profile = user.profileId;
   return token;
 };
 
@@ -111,15 +118,15 @@ export const googleUserLogin = async (
   dbRepositoryProfile: ReturnType<profileDbInterface>,
   authService: ReturnType<AuthServiceInterface>
 ) => {
-  const isExistingEmail = await userRepository.getUserByEmail(user.email);
+  const isExistingEmail: any = await userRepository.getUserByEmail(user.email);
   if (isExistingEmail) {
     const token = authService.generateToken(isExistingEmail._id.toString());
-
-    return token;
+    const applicantId = isExistingEmail.profileId;
+    return { token, applicantId };
   } else {
     const profile: any = await dbRepositoryProfile.addProfile(user);
     const createdUser = await userRepository.addUser(user, profile._id);
-    const applicantId = createdUser._id;
+    const applicantId = profile._id;
     const token: string = authService.generateToken(createdUser._id.toString());
 
     return { token, profile, applicantId };
@@ -131,14 +138,14 @@ export const recruiterLogin = async (
   recruiterRepository: ReturnType<RecruiterDbInterface>,
   authService: ReturnType<AuthServiceInterface>
 ) => {
-  const recruiter: recruiterInterface | null =
+  const recruiterData: recruiterInterface | null =
     await recruiterRepository.getRecruiterByMail(email);
-  if (!recruiter) {
+  if (!recruiterData) {
     throw new AppError("this user doesn't exist", HttpStatus.UNAUTHORIZED);
   }
   const isPasswordCorrect = await authService.comparePassword(
     password,
-    recruiter.password
+    recruiterData.password
   );
   if (!isPasswordCorrect) {
     throw new AppError(
@@ -146,6 +153,24 @@ export const recruiterLogin = async (
       HttpStatus.UNAUTHORIZED
     );
   }
-  const token = authService.generateToken(recruiter._id.toString());
-  return token;
+  const token = authService.generateToken(recruiterData._id.toString());
+
+  return { token, recruiterData };
+};
+
+export const recruiterDetails = async (
+  recId: string,
+  recruiterRepository: ReturnType<RecruiterDbInterface>
+) => {
+  const profileDetails = await recruiterRepository.getDetails(recId);
+  return profileDetails;
+};
+export const userDetails = async (
+  userId: string,
+  userRepository: ReturnType<UserDbInterface>
+) => {
+  const profileDetails = await userRepository.getDetails(userId);
+  console.log(profileDetails, 'hhhhhhh');
+
+  return profileDetails;
 };

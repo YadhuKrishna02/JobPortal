@@ -8,6 +8,8 @@ import { recruiterDbInterface } from '../../../application/repositories/recruite
 import { recruiterDB } from '../../database/mongoDB/repositories/recruiterDB';
 import { userProfileDb } from '../../database/mongoDB/repositories/userProfile';
 import { profileDbInterface } from '../../../application/repositories/userProfileInterface';
+import { recProfileDbInterface } from '../../../application/repositories/recruiterProfileInterface';
+import { recProfileDb } from '../../database/mongoDB/repositories/recruiterProfile';
 
 const authRouter = () => {
   const router = express.Router();
@@ -20,12 +22,18 @@ const authRouter = () => {
     recruiterDB,
     recruiterDbInterface,
     profileDbInterface,
-    userProfileDb
+    userProfileDb,
+    recProfileDbInterface,
+    recProfileDb
   );
 
   router.post('/signup', controller.registerUser);
 
   router.post('/recruiter/signup', controller.registerRecruiter);
+
+  router.get('/recruiter_details/:recId', controller.getDetails);
+
+  router.get('/job_seeker_details/:userProfId', controller.getUserDetails);
 
   router.post('/login', controller.loginUser);
 

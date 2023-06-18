@@ -14,12 +14,15 @@ export const jobDbInterface = (repository: ReturnType<jobDB>) => {
   const getApplicants = async (jobId: string) =>
     await repository.getApplicants(jobId);
 
+  const getAllJobs = async () => await repository.getAllJobs();
+
   return {
     addJob,
     getJob,
     editJob,
     deleteJob,
     getApplicants,
+    getAllJobs,
   };
 };
 

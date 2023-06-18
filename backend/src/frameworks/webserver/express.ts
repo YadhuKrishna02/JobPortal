@@ -26,13 +26,19 @@ const expressConfig = (app: Application) => {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.use(
-    cors({
-      origin: 'http://localhost:5173',
-      methods: 'GET POST PUT PATCH DELETE',
-      credentials: true,
-    })
-  );
+  const corsOptions = {
+    origin: 'http://localhost:5173',
+    exposedHeaders: [
+      'Cross-Origin-Opener-Policy',
+      'Cross-Origin-Resource-Policy',
+    ],
+  };
+  // app.use((req, res, next) => {
+  //   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  //   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  //   next();
+  // });
+  app.use(cors(corsOptions));
 };
 
 export default expressConfig;

@@ -7,11 +7,20 @@ import { JobDbInterface } from '../../application/repositories/jobDbInterface';
 import { EditJob } from '../../application/use-cases/job/job';
 import { DeleteJob } from '../../application/use-cases/job/job';
 import { recruiterProfileInterface } from '../../types/recrProfileInterface';
+import { recProfileDbInterface } from '../../application/repositories/recruiterProfileInterface';
+import { recProfileDb } from '../../frameworks/database/mongoDB/repositories/recruiterProfile';
 import { applicantDetails } from '../../application/use-cases/recruiter/recruiter';
+import { ProfileEdit } from '../../application/use-cases/recruiter/recruiter';
 import { Types } from 'mongoose';
 
-const jobController = (jobInterface: JobDbInterface, jobDbImpl: jobDB) => {
+const jobController = (
+  jobInterface: JobDbInterface,
+  jobDbImpl: jobDB,
+  recProfileInterface: recProfileDbInterface,
+  recProfileImpl: recProfileDb
+) => {
   const dbRepositoryJob = jobInterface(jobDbImpl());
+  const dbRepositoryRecProfile = recProfileInterface(recProfileImpl());
 
   //post job
   const postJob = asyncHandler(async (req: Request, res: Response) => {
@@ -51,18 +60,6 @@ const jobController = (jobInterface: JobDbInterface, jobDbImpl: jobDB) => {
     });
   });
 
-  //edit profile
-
-  const editProfile = asyncHandler(async (req: Request, res: Response) => {
-    const editedData: recruiterProfileInterface = req.body;
-    const { id } = req.params;
-    // const job = await EditProfile(id, editedData, dbRepositoryJob);
-    // res.json({
-    //   status: 'success',
-    //   message: 'job edited successfully',
-    // });
-  });
-
   //get applicants
 
   const getApplicants = asyncHandler(async (req: Request, res: Response) => {
@@ -77,12 +74,33 @@ const jobController = (jobInterface: JobDbInterface, jobDbImpl: jobDB) => {
     }
   });
 
+  //edit profile
+
+  const editProfile = asyncHandler(async (req: Request, res: Response) => {
+    const editedData: recruiterProfileInterface = req.body;
+    const profileId: string = req.params.id;
+    const file: any = req?.file?.path;
+    const editedProfile: any = await ProfileEdit(
+      editedData,
+      profileId,
+      dbRepositoryRecProfile,
+      file
+    );
+    console.log(editedProfile, 'plolo');
+
+    res.json({
+      status: 'success',
+      message: 'profile edited successfully',
+      editedProfile,
+    });
+  });
+
   return {
     postJob,
     editJob,
-    editProfile,
     deleteJob,
     getApplicants,
+    editProfile,
   };
 };
 

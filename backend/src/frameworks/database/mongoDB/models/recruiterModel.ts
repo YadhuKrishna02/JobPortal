@@ -31,6 +31,10 @@ const recruiterSchema = new Schema(
       required: true,
       minlength: 6,
     },
+    profileId: {
+      type: String,
+      ref: 'RecruiterProfile',
+    },
   },
   { timestamps: true }
 );

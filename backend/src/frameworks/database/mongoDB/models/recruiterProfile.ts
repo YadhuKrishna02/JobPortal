@@ -28,9 +28,7 @@ const recruiterProfileSchema = new mongoose.Schema(
     industry: {
       type: String,
     },
-    website: {
-      type: String,
-    },
+
     about: {
       type: String,
     },

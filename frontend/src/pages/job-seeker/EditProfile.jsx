@@ -15,6 +15,8 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { getUsers } from '../../redux/chat/chatSlice';
 import { useDispatch } from 'react-redux';
 import { editUserProfile } from '../../redux/user/userSlice';
 import { useFormik } from 'formik';
@@ -27,6 +29,8 @@ import { toast } from 'react-hot-toast';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
+
   const validationSchema = Yup.object({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
@@ -37,8 +41,19 @@ const ProfilePage = () => {
     education: Yup.string().required('Education is required'),
   });
 
-  const profileId = useSelector((state) => state?.users?.profile._id);
-  const profileData = useSelector((state) => state?.users?.profile);
+  const profileId = useSelector((state) => state?.users?.users?.applicantId);
+  const [profileData, setProfileData] = useState(null);
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const profile = await dispatch(getUsers(profileId));
+        setProfileData(profile?.payload?.data?.userProfile?.profileId);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserData();
+  }, [profileId, dispatch]);
   const [loading, setLoading] = useState(false);
 
   const onDrop = (acceptedFiles) => {
@@ -47,7 +62,6 @@ const ProfilePage = () => {
   };
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [newLanguage, setNewLanguage] = useState('');
@@ -74,12 +88,12 @@ const ProfilePage = () => {
 
   const formik = useFormik({
     initialValues: {
-      firstName: profileData?.firstName || '',
-      lastName: profileData?.lastName || '',
-      email: profileData?.email || '',
-      contactNumber: profileData?.contactNumber || '',
-      education: profileData?.education || '',
-      languages: profileData?.languages || [],
+      firstName: '',
+      lastName: '',
+      email: '',
+      contactNumber: '',
+      education: '',
+      languages: [],
       resume: null,
     },
     validationSchema,
@@ -125,6 +139,32 @@ const ProfilePage = () => {
     touched,
     errors,
   } = formik;
+
+  useEffect(() => {
+    if (profileData) {
+      setFieldValue('firstName', profileData.firstName || '');
+      setFieldValue('lastName', profileData.lastName || '');
+      setFieldValue('email', profileData.email || '');
+      setFieldValue('contactNumber', profileData.contactNumber || '');
+      setFieldValue('education', profileData.education || '');
+      setFieldValue('languages', profileData.languages || []);
+    }
+  }, [profileData, setFieldValue]);
+
+  if (!profileData) {
+    return (
+      <Container maxWidth="md" sx={{ py: 6 }}>
+        <Grid
+          container
+          justifyContent="center"
+          alignItems="center"
+          height="100vh"
+        >
+          <CircularProgress />
+        </Grid>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="md">

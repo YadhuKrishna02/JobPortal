@@ -71,7 +71,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ApplicantCard = (props) => {
-  const { name, email, phoneNumber } = props;
+  const { name, email, phoneNumber, onChatButtonClick } = props;
+  const handleChatButtonClick = () => {
+    // Call the callback function passed from the parent component
+    if (onChatButtonClick) {
+      onChatButtonClick();
+    }
+  };
   const classes = useStyles();
 
   return (
@@ -104,6 +110,7 @@ const ApplicantCard = (props) => {
           variant="outlined"
           startIcon={<ChatIcon />}
           className={classes.deleteButton}
+          onClick={handleChatButtonClick}
         >
           Chat
         </Button>

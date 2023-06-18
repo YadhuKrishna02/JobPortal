@@ -46,7 +46,7 @@ export const googleAddAsyncUser = createAsyncThunk(
   async (payload) => {
     try {
       const response = await authApi.post('/sign-in-with-google', payload);
-      console.log(response?.data);
+      console.log(response?.data, 'google-dataaaaaaaaa');
       return response.data;
     } catch (error) {
       // Handle error

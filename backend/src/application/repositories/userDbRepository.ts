@@ -12,9 +12,13 @@ export const userDbRepository = (
     profileId: any
   ) => await repository.addUser(user, profileId);
 
+  const getDetails = async (userId: string) =>
+    await repository.getDetails(userId);
+
   return {
     getUserByEmail,
     addUser,
+    getDetails,
   };
 };
 
