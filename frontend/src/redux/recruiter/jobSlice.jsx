@@ -41,8 +41,19 @@ export const DeleteJob = createAsyncThunk('jobs/DeleteJob', async (jobId) => {
   }
 });
 
+export const GetJobById = createAsyncThunk('jobs/GetJobById', async (recId) => {
+  try {
+    const response = await recruiterApi.get(`/view_job/${recId}`);
+    console.log(response?.data?.getJob, 'lalalla');
+    return response?.data?.getJob;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 const initialState = {
   jobs: [],
+  jobsById: {},
   error: null,
 };
 
@@ -73,6 +84,9 @@ const jobSlice = createSlice({
 
       .addCase(createJob.rejected, (state, { error }) => {
         state.error = error.message;
+      })
+      .addCase(GetJobById.fulfilled, (state, { payload }) => {
+        state.jobsById = payload;
       });
   },
 });

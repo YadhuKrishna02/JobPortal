@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { chatApi } from '../../common/apis/chatApi';
 import authApi from '../../common/apis/authApi';
 import { toast } from 'react-hot-toast';
+import { messageApi } from '../../common/apis/messageApi';
 
 export const createChat = createAsyncThunk(
   'chats/createChat',
@@ -15,6 +16,33 @@ export const createChat = createAsyncThunk(
     } catch (error) {
       toast.error(error?.response?.data?.message);
       //   return error.response.data;
+    }
+  }
+);
+
+export const getMessages = createAsyncThunk(
+  'chat/getMessages',
+  async (chatId) => {
+    try {
+      const response = await messageApi.get(`/${chatId}`);
+
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const addMessage = createAsyncThunk(
+  'chat/addMessage',
+  async (message) => {
+    console.log(message, 'yoooooo');
+    try {
+      const response = await messageApi.post('/', message);
+      console.log(response, 'annan');
+      return response?.data?.messages;
+    } catch (error) {
+      console.log(error);
     }
   }
 );

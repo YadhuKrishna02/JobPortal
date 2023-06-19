@@ -11,6 +11,7 @@ import { recProfileDbInterface } from '../../application/repositories/recruiterP
 import { recProfileDb } from '../../frameworks/database/mongoDB/repositories/recruiterProfile';
 import { applicantDetails } from '../../application/use-cases/recruiter/recruiter';
 import { ProfileEdit } from '../../application/use-cases/recruiter/recruiter';
+import { ViewJob } from '../../application/use-cases/job/job';
 import { Types } from 'mongoose';
 
 const jobController = (
@@ -45,6 +46,20 @@ const jobController = (
       status: 'success',
       message: 'job edited successfully',
     });
+  });
+
+  //view job
+
+  const viewJob = asyncHandler(async (req: Request, res: Response) => {
+    const { recId } = req.params;
+
+    const getJob = await ViewJob(recId, dbRepositoryJob);
+    res.json({
+      status: 'success',
+      message: 'jobs fetched successfully',
+      getJob,
+    });
+    // res.json({})
   });
 
   //delete job
@@ -101,6 +116,7 @@ const jobController = (
     deleteJob,
     getApplicants,
     editProfile,
+    viewJob,
   };
 };
 

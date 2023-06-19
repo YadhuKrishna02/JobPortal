@@ -75,3 +75,11 @@ export const AllJobs = async (jobRepository: ReturnType<JobDbInterface>) => {
   const allJobs = await jobRepository.getAllJobs();
   return allJobs;
 };
+
+export const ViewJob = async (
+  recId: string,
+  jobRepository: ReturnType<JobDbInterface>
+) => {
+  const job = await jobRepository.getJobByRecId(recId);
+  return job;
+};

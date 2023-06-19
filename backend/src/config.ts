@@ -7,6 +7,8 @@ const configKeys = {
   JWT_SECRET: process.env.JWT_SECRET as string,
   GOOGLE_CLOUD_ID: process.env.GOOGLE_CLOUD_ID as string,
   GOOGLE_KEY_SECRET: process.env.GOOGLE_KEY_SECRET as string,
+  EMAIL: process.env.EMAIL as string,
+  PASSWORD: process.env.PASSWORD as string,
 };
 
 export default configKeys;

@@ -15,6 +15,8 @@ const messageController = (
   const dbRepositorymessage = messageDbInterface(messageDbImp());
 
   const addMessage = asyncHandler(async (req: Request, res: Response) => {
+    console.log(req.body, 'reqqqqqqqqqqq');
+
     const { chatId, senderId, message } = req.body;
     const messages = await messageAdd(
       chatId,
@@ -30,6 +32,8 @@ const messageController = (
   const getMessages = asyncHandler(async (req: Request, res: Response) => {
     const { chatId } = req.params;
     const messages = await getMessage(chatId, dbRepositorymessage);
+    console.log(messages, 'lololo');
+
     res.json({
       status: 'success',
       messages,

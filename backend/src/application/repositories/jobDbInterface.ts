@@ -1,3 +1,4 @@
+import { Types } from 'mongoose';
 import { jobDB } from '../../frameworks/database/mongoDB/repositories/jobDB';
 import { JobInterface } from '../../types/jobInterface';
 
@@ -16,6 +17,9 @@ export const jobDbInterface = (repository: ReturnType<jobDB>) => {
 
   const getAllJobs = async () => await repository.getAllJobs();
 
+  const getJobByRecId = async (recId: string) =>
+    await repository.getJobByRecId(recId);
+
   return {
     addJob,
     getJob,
@@ -23,6 +27,7 @@ export const jobDbInterface = (repository: ReturnType<jobDB>) => {
     deleteJob,
     getApplicants,
     getAllJobs,
+    getJobByRecId,
   };
 };
 

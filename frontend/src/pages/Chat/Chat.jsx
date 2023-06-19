@@ -31,6 +31,7 @@ const Chat = () => {
     appId: userId,
   };
   const currentUserId = recruiterId ? recId : usId;
+  console.log(currentUserId, ';;;;');
   const [chats, setChats] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -51,12 +52,13 @@ const Chat = () => {
       setReceiveMessage(data);
     });
 
-    // return () => {
-    //   if (socket.current) {
-    //     socket.current.disconnect();
-    //   }
-    // };
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
   }, [Id, receiveMessage]);
+  console.log(receiveMessage, 'reeeeeeeee');
   useEffect(() => {
     if (sendMessage !== null) {
       socket.current.emit('send-message', sendMessage);

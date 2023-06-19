@@ -1,6 +1,7 @@
 import Job from '../models/jobModel';
 import { JobInterface } from '../../../../types/jobInterface';
 import { AllJobs } from '../../../../application/use-cases/job/job';
+import { Types } from 'mongoose';
 
 export const jobDB = () => {
   //add user
@@ -39,6 +40,10 @@ export const jobDB = () => {
     const jobList = await Job.find();
     return jobList;
   };
+  const getJobByRecId = async (recId: string) => {
+    const jobs = await Job.find({ recruiterId: recId });
+    return jobs;
+  };
   return {
     addJob,
     getJob,
@@ -46,6 +51,7 @@ export const jobDB = () => {
     deleteJob,
     getApplicants,
     getAllJobs,
+    getJobByRecId,
   };
 };
 

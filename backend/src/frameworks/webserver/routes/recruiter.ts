@@ -22,6 +22,8 @@ const recruiterRouter = () => {
 
   router.post('/create_job', controller.postJob);
 
+  router.get('/view_job/:recId', controller.viewJob);
+
   router.put('/edit_job/:id', controller.editJob);
 
   router.delete('/delete_job/:id', controller.deleteJob);

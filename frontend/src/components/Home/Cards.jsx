@@ -15,7 +15,7 @@ import SendIcon from '@material-ui/icons/Send';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import DescriptionIcon from '@material-ui/icons/Description';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 
 const useStyles = makeStyles((theme) => ({
@@ -97,31 +97,17 @@ const JobContainer = ({
               {jobTitle}
             </Typography>
           </Grid>
-          <Grid item className={classes.jobTitleContainer}>
+          <Grid>
             <Typography
               variant="body2"
               className={classes.location}
               style={{ color: '#777585' }}
             >
-              <LocationOnIcon />
+              <LocationOnIcon style={{ marginRight: '0.5rem' }} />
               {jobLocation}
             </Typography>
           </Grid>
-          <Grid item className={classes.skills}>
-            {requiredSkills.map((skill, index) => (
-              <Chip
-                key={index}
-                label={skill}
-                variant="outlined"
-                style={{
-                  backgroundColor: '#F4F4F5',
-                  height: '1.5rem',
-                  color: '#777585',
-                }}
-                clickable={false}
-              />
-            ))}
-          </Grid>
+
           <Grid item>
             <Typography
               style={{
@@ -145,13 +131,28 @@ const JobContainer = ({
               variant="body2"
               className={classes.salary}
             >
-              <MonetizationOnIcon
+              <CurrencyRupeeIcon
                 className={classes.icon}
                 style={{ marginRight: '0.5rem' }}
               />
-              <span className={classes.rupeeIcon}>₹</span>
+              {/* <span className={classes.rupeeIcon}>₹</span> */}
               {salaryPackage}
             </Typography>
+          </Grid>
+          <Grid item className={classes.skills}>
+            {requiredSkills.map((skill, index) => (
+              <Chip
+                key={index}
+                label={skill}
+                variant="outlined"
+                style={{
+                  backgroundColor: '#F4F4F5',
+                  height: '1.5rem',
+                  color: '#777585',
+                }}
+                clickable={false}
+              />
+            ))}
           </Grid>
           <Grid item>
             <Typography

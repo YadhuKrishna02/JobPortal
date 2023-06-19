@@ -2,94 +2,96 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 import { useRef } from 'react';
-// import { addMessage, getMessages } from "../../api/MessageRequests";
-// import { getUser } from '../../api/userApi/userApi';
+import { getMessages, addMessage } from '../../redux/chat/chatSlice';
+import { getUsers } from '../../redux/chat/chatSlice';
 import './ChatBox.css';
-// import { format } from 'timeago.js';
-// import InputEmoji from 'react-input-emoji';
+import { format } from 'timeago.js';
+import InputEmoji from 'react-input-emoji';
 import { useSelector } from 'react-redux';
-// import {
-//   addMessage,
-//   getMessages,
-// } from '../../api/MessageRequest/MessageRequest';
+
 // import UserImage from '../UserImage/UserImage';
 import { Box, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const token = useSelector((state) => state.token);
+  const dispatch = useDispatch();
+  const recruiterId = useSelector(
+    (state) => state?.recruiters?.recruiters?.recruiterData?._id
+  );
+  // const token = useSelector((state) => state.token);
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   useEffect(() => {
-  //     if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
-  //       setMessages([...messages, receivedMessage]);
-  //     }
-  //   }, [receivedMessage]);
+  useEffect(() => {
+    if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
+      setMessages([...messages, receivedMessage]);
+    }
+  }, [receivedMessage]);
 
   // fetching data for header
-  //   useEffect(() => {
-  //     const userId = chat?.members?.find((id) => id !== currentUser);
-  //     const getUserData = async () => {
-  //       try {
-  //         const data = await getUser(userId, token);
+  useEffect(() => {
+    const userId = chat?.members?.find((id) => id !== currentUser);
+    const getUserData = async () => {
+      try {
+        const data = await dispatch(getUsers(userId));
 
-  //         setUserData(data);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     };
-  //     if (chat !== null) getUserData();
-  //   }, [chat, currentUser]);
+        setUserData(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (chat !== null) getUserData();
+  }, [chat, currentUser]);
 
   // fetch messages
-  //   useEffect(() => {
-  //     const fetchMessages = async () => {
-  //       try {
-  //         const data = await getMessages(token, chat._id);
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const data = await dispatch(getMessages(chat._id));
+        setMessages(data?.payload?.data?.messages);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  //         setMessages(data.messages);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     };
-
-  //     if (chat !== null) fetchMessages();
-  //   }, [chat]);
+    if (chat !== null) fetchMessages();
+  }, [chat]);
   // Always scroll to last Message
-  //   useEffect(() => {
-  //     scroll.current?.scrollIntoView({ behavior: 'smooth' });
-  //   }, [messages]);
+  useEffect(() => {
+    scroll.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
   // Send Message
-  //   const handleSend = async (e) => {
-  //     e.preventDefault();
-  //     if (!newMessage.trim()) {
-  //       return;
-  //     }
+  const handleSend = async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim()) {
+      return;
+    }
 
-  //     const message = {
-  //       senderId: currentUser,
-  //       message: newMessage,
-  //       chatId: chat._id,
-  //     };
-  //     const receiverId = chat.members.find((id) => id !== currentUser);
-  //     setSendMessage({ ...message, receiverId });
-  //     try {
-  //       const data = await addMessage(token, message);
-  //       setMessages([...messages, data.messages]);
-  //       setNewMessage('');
-  //     } catch {
-  //       console.log('error');
-  //     }
-  //   };
+    const message = {
+      senderId: currentUser,
+      message: newMessage,
+      chatId: chat._id,
+    };
+    const receiverId = chat.members.find((id) => id !== currentUser);
+    setSendMessage({ ...message, receiverId });
+    try {
+      const data = await dispatch(addMessage(message));
+      console.log(data, 'lololololoioioio');
+      setMessages([...messages, data?.payload]);
+      setNewMessage('');
+    } catch {
+      console.log('error');
+    }
+  };
 
   // Receive Message from parent component
-
+  console.log(messages, 'msgsssssssss');
   const scroll = useRef();
-  const imageRef = useRef();
+  // const imageRef = useRef();
   return (
     <>
       <div className="ChatBox-container" style={{ height: '70vh' }}>
@@ -124,21 +126,21 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                         : 'message'
                     }
                   >
-                    <span>{message.message}</span>{' '}
-                    {/* <span>{format(message.createdAt)}</span> */}
+                    <span>{message.message}</span>
+                    <span>{format(message.createdAt)}</span>
                   </div>
                 </>
               ))}
             </div>
             <div className="chat-sender">
               <div></div>
-              {/* <InputEmoji value={newMessage} onChange={handleChange} /> */}
+              <InputEmoji value={newMessage} onChange={handleChange} />
               <div
                 className={`send-button button ${
                   !newMessage.trim() ? 'disabled' : ''
                 }`}
                 disabled={!newMessage.trim()}
-                // onClick={handleSend}
+                onClick={handleSend}
               >
                 Send
               </div>
