@@ -13,6 +13,9 @@ const userProfileSchema = new mongoose.Schema({
   contactNumber: {
     type: String,
   },
+  profilePicture: {
+    type: String,
+  },
   education: {
     type: String,
   },

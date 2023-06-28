@@ -41,18 +41,12 @@ export const ProfileEdit = async (
 };
 
 export const SendInterviewLink = async (
-  linkData: {
-    email: string;
-    firstName: string;
-    roomId: string;
-  },
+  roomId: string | any,
+  email: string | any,
+  firstName: string | any,
   nodeMailerRepository: ReturnType<nodeMailerServiceInterface>
 ) => {
-  return await nodeMailerRepository.emailVerification(
-    linkData.email,
-    linkData.firstName,
-    linkData.roomId
-  );
+  return await nodeMailerRepository.emailVerification(email, firstName, roomId);
 };
 
 export const ChangeStatus = async (

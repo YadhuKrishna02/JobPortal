@@ -60,6 +60,25 @@ export const viewApplicants = createAsyncThunk(
     }
   }
 );
+export const sentMail = createAsyncThunk(
+  'recruiters/sentMail',
+  async ({ applicantId, email, firstName }) => {
+    try {
+      const response = await recruiterApi.post(
+        `/interview_link/?roomId=${applicantId}&email=${email}&firstName=${firstName}`
+      );
+      console.log(response, 'ppppp');
+      if (response?.data?.status == 'success') {
+        toast.success(response?.data?.message);
+      }
+
+      // return response.data;
+    } catch (error) {
+      // Handle error
+      // return error?.response?.data?.message; // Throw the error to be caught in the .catch() block
+    }
+  }
+);
 export const changeApplicantsStatus = createAsyncThunk(
   'recruiters/changeApplicantsStatus',
   async ({ jobId, applicantId, applicationStatus }) => {

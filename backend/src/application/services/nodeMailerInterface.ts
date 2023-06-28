@@ -6,7 +6,7 @@ export const nodeMailerInterface = (service: NodemailerReturn) => {
     firstName: string,
     roomId: string
   ) => {
-    service.nodemailerEmailVerification(email, firstName, roomId);
+    return service.nodemailerEmailVerification(email, firstName, roomId);
   };
   return {
     emailVerification,

@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
       width: '40rem',
     },
     position: 'relative',
-    height: '12rem', // Increased height
+    height: '15rem', // Increased height
   },
   logo: {
     marginRight: theme.spacing(2),
@@ -81,6 +81,9 @@ const useStyles = makeStyles((theme) => ({
   changeStatus: {
     marginTop: '2rem',
   },
+  interviewButton: {
+    marginTop: '2rem',
+  },
 }));
 
 const ApplicantCard = (props) => {
@@ -91,6 +94,7 @@ const ApplicantCard = (props) => {
     onChatButtonClick,
     onCVClick,
     onVideoButtonClick,
+    onInviteClick,
     applicantId,
     jobId,
   } = props;
@@ -114,6 +118,10 @@ const ApplicantCard = (props) => {
       changeApplicantsStatus({ applicantId, jobId, applicationStatus })
     );
     console.log(response, 'rrrrrrrrr');
+  };
+
+  const handleInterviewMail = () => {
+    console.log('Sending interview mail...');
   };
 
   const classes = useStyles();
@@ -140,6 +148,13 @@ const ApplicantCard = (props) => {
           onClick={handleStatusSubmit}
         >
           Save
+        </Button>
+        <Button
+          variant="outlined"
+          className={classes.interviewButton}
+          onClick={onInviteClick}
+        >
+          INVITE
         </Button>
       </div>
       <Avatar alt="Company Logo" className={classes.logo} />
@@ -196,6 +211,7 @@ ApplicantCard.propTypes = {
   onChatButtonClick: PropTypes.func,
   onCVClick: PropTypes.func,
   onVideoButtonClick: PropTypes.func,
+  onInviteClick: PropTypes.func,
   onChangeStatusClick: PropTypes.func,
   applicantId: PropTypes.string.isRequired,
   jobId: PropTypes.string.isRequired,

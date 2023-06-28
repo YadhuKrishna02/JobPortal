@@ -121,9 +121,20 @@ const jobController = (
 
   const sendInterviewLink = asyncHandler(
     async (req: Request, res: Response) => {
-      const linkData = req.body;
-      const sendLink = await SendInterviewLink(linkData, nodemailer);
-      console.log(sendLink, 'linkkkkkkkk');
+      const { roomId, email, firstName } = req.query;
+
+      const sendLink = await SendInterviewLink(
+        roomId,
+        email,
+        firstName,
+        nodemailer
+      );
+      if (sendLink === true) {
+        res.json({
+          status: 'success',
+          message: 'Email sent successfully',
+        });
+      }
     }
   );
 

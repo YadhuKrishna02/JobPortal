@@ -9,5 +9,9 @@ const configKeys = {
     PORT: process.env.PORT,
     MONGO_DB_URL: process.env.DATABASE,
     JWT_SECRET: process.env.JWT_SECRET,
+    GOOGLE_CLOUD_ID: process.env.GOOGLE_CLOUD_ID,
+    GOOGLE_KEY_SECRET: process.env.GOOGLE_KEY_SECRET,
+    EMAIL: process.env.EMAIL,
+    PASSWORD: process.env.PASSWORD,
 };
 exports.default = configKeys;

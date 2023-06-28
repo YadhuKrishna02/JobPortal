@@ -11,12 +11,21 @@ const userRepositoryMongoDB = () => {
         return user;
     };
     //add user
-    const addUser = async (user) => {
-        return await userModel_1.default.create(user);
+    const addUser = async (user, profileId) => {
+        const newUser = new userModel_1.default(user);
+        newUser.profileId = profileId;
+        newUser.save();
+        return newUser;
+    };
+    const getDetails = async (userId) => {
+        const user = await userModel_1.default.findOne({ profileId: userId }).populate('profileId');
+        console.log(user, 'useeeeeeee');
+        return user;
     };
     return {
         getUserByEmail,
         addUser,
+        getDetails,
     };
 };
 exports.userRepositoryMongoDB = userRepositoryMongoDB;

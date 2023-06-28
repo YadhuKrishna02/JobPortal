@@ -9,24 +9,22 @@ const userDbRepository_1 = require("../../../application/repositories/userDbRepo
 const authServiceInterface_1 = require("../../../application/services/authServiceInterface");
 const userRepositoryMongoDB_1 = require("../../database/mongoDb/repositories/userRepositoryMongoDB");
 const authService_1 = require("../../services/authService");
-// import { adminDbRepository } from '../../../application/repositories/adminDbRepository';
-// import { googleAuthServiceInterface } from '../../../application/services/googleAuthServiceInterface';
-// import { adminRepositoryMongoDB } from '../../database/mongoDb/repositories/adminRepositoryMongoDB';
-// import { googleAuthService } from '../../services/googleAuthService';
+const recruiterDbInterface_1 = require("../../../application/repositories/recruiterDbInterface");
+const recruiterDB_1 = require("../../database/mongoDB/repositories/recruiterDB");
+const userProfile_1 = require("../../database/mongoDB/repositories/userProfile");
+const userProfileInterface_1 = require("../../../application/repositories/userProfileInterface");
+const recruiterProfileInterface_1 = require("../../../application/repositories/recruiterProfileInterface");
+const recruiterProfile_1 = require("../../database/mongoDB/repositories/recruiterProfile");
 const authRouter = () => {
     const router = express_1.default.Router();
-    const controller = (0, authController_1.default)(authServiceInterface_1.authServiceInterface, authService_1.authService, userDbRepository_1.userDbRepository, userRepositoryMongoDB_1.userRepositoryMongoDB);
-    //   router.post('/admin-login', controller.loginAdmin);
+    const controller = (0, authController_1.default)(authServiceInterface_1.authServiceInterface, authService_1.authService, userDbRepository_1.userDbRepository, userRepositoryMongoDB_1.userRepositoryMongoDB, recruiterDB_1.recruiterDB, recruiterDbInterface_1.recruiterDbInterface, userProfileInterface_1.profileDbInterface, userProfile_1.userProfileDb, recruiterProfileInterface_1.recProfileDbInterface, recruiterProfile_1.recProfileDb);
     router.post('/signup', controller.registerUser);
-    //   router.post('/user-login', controller.loginUser);
-    //   router.post('/sign-in-with-google', controller.loginWithGoogle);
-    //api/signup
-    // router.post('/signup', controller.registerUser);
-    // //api/signin
-    // router.post('/signin', controller.loginUser);
-    // //api/logout
-    // router.get('/logout', controller.logOut);
-    //api/profile
+    router.post('/recruiter/signup', controller.registerRecruiter);
+    router.get('/recruiter_details/:recId', controller.getDetails);
+    router.get('/job_seeker_details/:userProfId', controller.getUserDetails);
+    router.post('/login', controller.loginUser);
+    router.post('/recruiter/login', controller.loginRecruiter);
+    router.post('/sign-in-with-google', controller.loginWithGoogle);
     return router;
 };
 exports.default = authRouter;

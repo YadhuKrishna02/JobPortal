@@ -23,12 +23,12 @@ export const nodeMailerService = () => {
         to: email, // Recipient email address
         subject: ' You have been selected as an InterviewXperts Interviewer',
         html: `<p>Dear ${name},</p>
-    <p>Thank you for expressing your interest in becoming an Interviewer at InterviewXperts. We are pleased to inform you that your request has been approved, and you have been selected to join our team of interview experts.</p>
+    <p>Thank you for expressing your interest in becoming part of our team. We are pleased to inform you that your request has been approved, and you have been selected to join our team of interview experts.</p>
     <p>To get started, please follow the link below to sign up and create your InterviewXperts Interviewer account:</p>
-    <p><a href="http://localhost:5173/signup/${roomId}">Sign Up</a></p>
-    <p>At InterviewXperts, we provide a comprehensive platform that empowers interviewers like you to enhance the interview experience for our users and help them succeed in their interviews.</p>
-    <p>If you have any questions or need further assistance, feel free to reach out to our support team. We are here to support you in your journey as an InterviewXperts Interviewer.</p>
-    <p>Best regards,<br/>Sujith S<br/>InterviewXperts Team</p>
+    <p><a href="http://localhost:5173/signup/${roomId}">Join</a></p>
+    <p>At JobZen, we provide a comprehensive platform that empowers jobseekers like you to enhance the interview experience and help them succeed in their interviews.</p>
+    <p>If you have any questions or need further assistance, feel free to reach out to our support team.</p>
+    <p>Best regards,<br/>Yadhu Krishna<br/>JobZen Team</p>
     `,
       };
 

@@ -23,6 +23,7 @@ const authService = () => {
         return token;
     };
     const verifyToken = (token) => {
+        console.log(token, 'tokkkkkkkkk');
         return jsonwebtoken_1.default.verify(token, config_1.default.JWT_SECRET);
     };
     return {

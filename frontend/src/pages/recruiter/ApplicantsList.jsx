@@ -5,6 +5,7 @@ import { viewApplicants } from '../../redux/recruiter/recruiterSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CircularProgress } from '@mui/material';
 import { createChat } from '../../redux/chat/chatSlice';
+import { sentMail } from '../../redux/recruiter/recruiterSlice';
 
 const ApplicantsList = () => {
   const dispatch = useDispatch();
@@ -49,6 +50,12 @@ const ApplicantsList = () => {
   const handleCVClick = (resume) => {
     window.open(resume, '_blank');
   };
+
+  const handleInviteClick = (applicantId, email, firstName) => {
+    const response = dispatch(sentMail({ applicantId, email, firstName }));
+    console.log(response, 'yuuuu');
+  };
+
   useEffect(() => {
     const fetchApplicants = async () => {
       try {
@@ -90,6 +97,13 @@ const ApplicantsList = () => {
             onCVClick={() => handleCVClick(applicant.resume)}
             onChatButtonClick={() => handleChatButtonClick(applicant._id)}
             onVideoButtonClick={() => handleVideoCall(applicant._id)}
+            onInviteClick={() =>
+              handleInviteClick(
+                applicant._id,
+                applicant.email,
+                applicant.firstName
+              )
+            }
             applicantId={applicant._id}
             jobId={jobId}
           />

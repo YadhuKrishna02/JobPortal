@@ -6,4 +6,5 @@ export interface UserProfileInterface {
   education: string;
   languages: string[];
   resume: string;
+  profilePicture: string;
 }

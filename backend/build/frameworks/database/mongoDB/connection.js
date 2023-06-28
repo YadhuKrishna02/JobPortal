@@ -8,7 +8,7 @@ const config_1 = __importDefault(require("../../../config"));
 mongoose_1.default.set('strictQuery', true);
 const connectDB = async () => {
     try {
-        await mongoose_1.default.connect(config_1.default.MONGO_DB_URL);
+        await mongoose_1.default.connect(config_1.default.MONGO_DB_URL, {});
         console.log(`Database connected successfully`);
     }
     catch (error) {

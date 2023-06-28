@@ -27,6 +27,7 @@ export const EditProfile = async (
     education: string;
     languages: string[];
     resume: string;
+    profilePicture: string;
   },
   dbRepositoryProfile: ReturnType<profileDbInterface>,
   file: string // Update the parameter type here
