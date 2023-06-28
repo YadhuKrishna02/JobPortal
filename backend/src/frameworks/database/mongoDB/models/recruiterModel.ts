@@ -39,5 +39,4 @@ const recruiterSchema = new Schema(
   { timestamps: true }
 );
 
-const Recruiter = model('Recruiter', recruiterSchema);
-export default Recruiter;
+export const Recruiter = model('Recruiter', recruiterSchema);

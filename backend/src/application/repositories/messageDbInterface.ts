@@ -1,4 +1,4 @@
-import { messageRepositoryType } from '../../frameworks/database/Mongodb/repositories/messageRepository';
+import { messageRepositoryType } from '../../frameworks/database/mongoDb/repositories/messageRepository';
 
 export const messageDbInterface = (
   repository: ReturnType<messageRepositoryType>

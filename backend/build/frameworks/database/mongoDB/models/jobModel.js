@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Job = void 0;
 const mongoose_1 = require("mongoose");
 const jobSchema = new mongoose_1.Schema({
     jobTitle: {
@@ -61,5 +62,4 @@ const jobSchema = new mongoose_1.Schema({
         },
     ],
 }, { timestamps: true });
-const Job = (0, mongoose_1.model)('Job', jobSchema);
-exports.default = Job;
+exports.Job = (0, mongoose_1.model)('Job', jobSchema);

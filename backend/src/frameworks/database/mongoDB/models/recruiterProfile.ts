@@ -39,9 +39,7 @@ const recruiterProfileSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const RecruiterProfile = mongoose.model(
+export const RecruiterProfile = mongoose.model(
   'RecruiterProfile',
   recruiterProfileSchema
 );
-
-export default RecruiterProfile;

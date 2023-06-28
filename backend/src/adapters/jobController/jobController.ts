@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
-import { jobDB } from '../../frameworks/database/mongoDB/repositories/jobDB';
+import { jobDB } from '../../frameworks/database/mongoDb/repositories/jobDB';
 import { JobInterface } from '../../types/jobInterface';
 import { createJob } from '../../application/use-cases/job/job';
 import { JobDbInterface } from '../../application/repositories/jobDbInterface';
@@ -8,7 +8,7 @@ import { EditJob } from '../../application/use-cases/job/job';
 import { DeleteJob } from '../../application/use-cases/job/job';
 import { recruiterProfileInterface } from '../../types/recrProfileInterface';
 import { recProfileDbInterface } from '../../application/repositories/recruiterProfileInterface';
-import { recProfileDb } from '../../frameworks/database/mongoDB/repositories/recruiterProfile';
+import { recProfileDb } from '../../frameworks/database/mongoDb/repositories/recruiterProfile';
 import { applicantDetails } from '../../application/use-cases/recruiter/recruiter';
 import { ProfileEdit } from '../../application/use-cases/recruiter/recruiter';
 import { nodeMailerServiceInterface } from '../../application/services/nodeMailerInterface';

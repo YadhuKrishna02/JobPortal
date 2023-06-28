@@ -9,8 +9,8 @@ const nodeMailerInterface_1 = require("../../../application/services/nodeMailerI
 const nodeMailer_1 = require("../../services/nodeMailer");
 const jobDbInterface_1 = require("../../../application/repositories/jobDbInterface");
 const recruiterProfileInterface_1 = require("../../../application/repositories/recruiterProfileInterface");
-const recruiterProfile_1 = require("../../../frameworks/database/mongoDB/repositories/recruiterProfile");
-const jobDB_1 = require("../../database/mongoDB/repositories/jobDB");
+const recruiterProfile_1 = require("../../../frameworks/database/mongoDb/repositories/recruiterProfile");
+const jobDB_1 = require("../../database/mongoDb/repositories/jobDB");
 const cloudinaryConfig_1 = require("../middlewares/cloudinaryConfig");
 const recruiterRouter = () => {
     const router = express_1.default.Router();

@@ -1,8 +1,7 @@
-import Job from '../models/jobModel';
-import UserProfile from '../models/userProfile';
+import { Job } from '../models/jobModel';
+import { UserProfile } from '../models/userProfile';
 import { JobInterface } from '../../../../types/jobInterface';
-import { AllJobs } from '../../../../application/use-cases/job/job';
-import { FilterQuery, Types } from 'mongoose';
+import { FilterQuery } from 'mongoose';
 
 export const jobDB = () => {
   //add user

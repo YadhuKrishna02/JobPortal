@@ -1,7 +1,6 @@
 import { GoogleUserInteface } from '../../../../types/googleUserInterface';
 import { CreateUserInterface } from '../../../../types/userInterface';
 import User from '../models/userModel';
-import UserProfile from '../models/userProfile';
 
 export const userRepositoryMongoDB = () => {
   const getUserByEmail = async (email: string) => {

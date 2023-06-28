@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const connection_1 = __importDefault(require("./frameworks/database/mongoDB/connection"));
+const connection_1 = __importDefault(require("./frameworks/database/mongoDb/connection"));
 const http_1 = __importDefault(require("http"));
 const server_1 = __importDefault(require("./frameworks/webserver/server"));
 const express_2 = __importDefault(require("./frameworks/webserver/express"));

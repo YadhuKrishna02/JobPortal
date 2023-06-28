@@ -1,5 +1,5 @@
 import { UserProfileInterface } from '../../types/userProfileInterface';
-import { userProfileDb } from '../../frameworks/database/mongoDB/repositories/userProfile';
+import { userProfileDb } from '../../frameworks/database/mongoDb/repositories/userProfile';
 
 export const profileDbInterface = (repository: ReturnType<userProfileDb>) => {
   const editProfile = async (_id: string, profile: UserProfileInterface) =>

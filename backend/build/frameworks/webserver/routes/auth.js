@@ -10,11 +10,11 @@ const authServiceInterface_1 = require("../../../application/services/authServic
 const userRepositoryMongoDB_1 = require("../../database/mongoDb/repositories/userRepositoryMongoDB");
 const authService_1 = require("../../services/authService");
 const recruiterDbInterface_1 = require("../../../application/repositories/recruiterDbInterface");
-const recruiterDB_1 = require("../../database/mongoDB/repositories/recruiterDB");
-const userProfile_1 = require("../../database/mongoDB/repositories/userProfile");
+const recruiterDB_1 = require("../../database/mongoDb/repositories/recruiterDB");
+const userProfile_1 = require("../../database/mongoDb/repositories/userProfile");
 const userProfileInterface_1 = require("../../../application/repositories/userProfileInterface");
 const recruiterProfileInterface_1 = require("../../../application/repositories/recruiterProfileInterface");
-const recruiterProfile_1 = require("../../database/mongoDB/repositories/recruiterProfile");
+const recruiterProfile_1 = require("../../database/mongoDb/repositories/recruiterProfile");
 const authRouter = () => {
     const router = express_1.default.Router();
     const controller = (0, authController_1.default)(authServiceInterface_1.authServiceInterface, authService_1.authService, userDbRepository_1.userDbRepository, userRepositoryMongoDB_1.userRepositoryMongoDB, recruiterDB_1.recruiterDB, recruiterDbInterface_1.recruiterDbInterface, userProfileInterface_1.profileDbInterface, userProfile_1.userProfileDb, recruiterProfileInterface_1.recProfileDbInterface, recruiterProfile_1.recProfileDb);

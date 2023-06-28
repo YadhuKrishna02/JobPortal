@@ -1,4 +1,4 @@
-import RecruiterProfile from '../models/recruiterProfile';
+import { RecruiterProfile } from '../models/recruiterProfile';
 import { recruiterProfileInterface } from '../../../../types/recrProfileInterface';
 
 export const recProfileDb = () => {

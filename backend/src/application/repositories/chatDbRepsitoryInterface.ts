@@ -1,4 +1,4 @@
-import { chatRepositoryType } from '../../frameworks/database/Mongodb/repositories/chatRepository';
+import { chatRepositoryType } from '../../frameworks/database/mongoDb/repositories/chatRepository';
 
 export const chatDbInterface = (repository: ReturnType<chatRepositoryType>) => {
   const createChat = async (senderId: string, receiverId: string) =>

@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const chatController_1 = __importDefault(require("../../../adapters/chatController/chatController"));
 const chatDbRepsitoryInterface_1 = require("../../../application/repositories/chatDbRepsitoryInterface");
-const chatRepository_1 = require("../../database/Mongodb/repositories/chatRepository");
+const chatRepository_1 = require("../../database/mongoDb/repositories/chatRepository");
 const chatRouter = () => {
     const router = express_1.default.Router();
     const controller = (0, chatController_1.default)(chatDbRepsitoryInterface_1.chatDbInterface, chatRepository_1.chatRepositoryImp);

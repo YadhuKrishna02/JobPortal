@@ -6,14 +6,14 @@ import { AuthService } from '../../frameworks/services/authService';
 import { AuthServiceInterface } from '../../application/services/authServiceInterface';
 import { recruiterInterface } from '../../types/recruiterInterface';
 import { CreateUserInterface } from '../../types/userInterface';
-import { recruiterDB } from '../../frameworks/database/mongoDB/repositories/recruiterDB';
+import { recruiterDB } from '../../frameworks/database/mongoDb/repositories/recruiterDB';
 import { RecruiterDbInterface } from '../../application/repositories/recruiterDbInterface';
 import { GoogleUserInteface } from '../../types/googleUserInterface';
 import { googleUserLogin } from '../../application/use-cases/auth/userAuth';
-import { userProfileDb } from '../../frameworks/database/mongoDB/repositories/userProfile';
+import { userProfileDb } from '../../frameworks/database/mongoDb/repositories/userProfile';
 import { profileDbInterface } from '../../application/repositories/userProfileInterface';
 import { recProfileDbInterface } from '../../application/repositories/recruiterProfileInterface';
-import { recProfileDb } from '../../frameworks/database/mongoDB/repositories/recruiterProfile';
+import { recProfileDb } from '../../frameworks/database/mongoDb/repositories/recruiterProfile';
 import { recruiterDetails } from '../../application/use-cases/auth/userAuth';
 import { userDetails } from '../../application/use-cases/auth/userAuth';
 

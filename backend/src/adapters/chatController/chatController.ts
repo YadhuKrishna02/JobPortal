@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { resolve } from 'path';
 import { chatDbInterfaceType } from '../../application/repositories/chatDbRepsitoryInterface';
-import { chatRepositoryType } from '../../frameworks/database/Mongodb/repositories/chatRepository';
+import { chatRepositoryType } from '../../frameworks/database/mongoDb/repositories/chatRepository';
 import {
   chatCreate,
   getAllChats,

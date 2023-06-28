@@ -1,4 +1,4 @@
-import Recruiter from '../models/recruiterModel';
+import { Recruiter } from '../models/recruiterModel';
 import { recruiterInterface } from '../../../../types/recruiterInterface';
 
 export const recruiterDB = () => {

@@ -1,7 +1,7 @@
 import express from 'express';
 import messageController from '../../../adapters/messageController/messageController';
 import { messageDbInterface } from '../../../application/repositories/messageDbInterface';
-import { messageRepositoryImp } from '../../database/Mongodb/repositories/messageRepository';
+import { messageRepositoryImp } from '../../database/mongoDb/repositories/messageRepository';
 
 const messageRouter = () => {
   const router = express.Router();

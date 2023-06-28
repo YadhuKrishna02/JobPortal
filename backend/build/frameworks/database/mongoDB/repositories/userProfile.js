@@ -1,27 +1,24 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userProfileDb = void 0;
-const userProfile_1 = __importDefault(require("../models/userProfile"));
-const jobModel_1 = __importDefault(require("../models/jobModel"));
+const userProfile_1 = require("../models/userProfile");
+const jobModel_1 = require("../models/jobModel");
 const userProfileDb = () => {
     const addProfile = async (profileData) => {
-        return await userProfile_1.default.create(profileData);
+        return await userProfile_1.UserProfile.create(profileData);
     };
     const editProfile = async (_id, editedData) => {
-        const editedJobData = await userProfile_1.default.findByIdAndUpdate({ _id }, { $set: editedData }, { new: true });
+        const editedJobData = await userProfile_1.UserProfile.findByIdAndUpdate({ _id }, { $set: editedData }, { new: true });
         return editedJobData;
     };
     const getAppliedJobs = async (profileId) => {
         try {
-            const userProfile = await userProfile_1.default.findById(profileId);
+            const userProfile = await userProfile_1.UserProfile.findById(profileId);
             if (!userProfile) {
                 return false;
             }
             const appliedJobs = userProfile.appliedJobs;
-            const jobs = await jobModel_1.default.find({ _id: { $in: appliedJobs } }).exec();
+            const jobs = await jobModel_1.Job.find({ _id: { $in: appliedJobs } }).exec();
             return jobs;
         }
         catch (error) {
@@ -31,7 +28,7 @@ const userProfileDb = () => {
     };
     const getStatus = async (applicantId, jobId) => {
         try {
-            const userProfile = await userProfile_1.default.findOne({
+            const userProfile = await userProfile_1.UserProfile.findOne({
                 _id: applicantId,
                 'appliedJobs._id': jobId,
             });

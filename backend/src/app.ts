@@ -1,5 +1,5 @@
 import express, { Application, NextFunction } from 'express';
-import connectDB from './frameworks/database/mongoDB/connection';
+import connectDB from './frameworks/database/mongoDb/connection';
 import http from 'http';
 import serverConfig from './frameworks/webserver/server';
 import expressConfig from './frameworks/webserver/express';

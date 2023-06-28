@@ -7,8 +7,8 @@ import {
   jobDbInterface,
 } from '../../../application/repositories/jobDbInterface';
 import { recProfileDbInterface } from '../../../application/repositories/recruiterProfileInterface';
-import { recProfileDb } from '../../../frameworks/database/mongoDB/repositories/recruiterProfile';
-import { jobDB } from '../../database/mongoDB/repositories/jobDB';
+import { recProfileDb } from '../../../frameworks/database/mongoDb/repositories/recruiterProfile';
+import { jobDB } from '../../database/mongoDb/repositories/jobDB';
 import upload from '../middlewares/cloudinaryConfig';
 import { uploadLogo } from '../middlewares/cloudinaryConfig';
 

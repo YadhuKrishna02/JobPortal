@@ -5,12 +5,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const userController_1 = __importDefault(require("../../../adapters/userController/userController"));
-const userProfile_1 = require("../../database/mongoDB/repositories/userProfile");
+const userProfile_1 = require("../../database/mongoDb/repositories/userProfile");
 const userProfileInterface_1 = require("../../../application/repositories/userProfileInterface");
 const applicantDbInterface_1 = require("../../../application/repositories/applicantDbInterface");
-const applicantDB_1 = require("../../database/mongoDB/repositories/applicantDB");
+const applicantDB_1 = require("../../database/mongoDb/repositories/applicantDB");
 const jobDbInterface_1 = require("../../../application/repositories/jobDbInterface");
-const jobDB_1 = require("../../database/mongoDB/repositories/jobDB");
+const jobDB_1 = require("../../database/mongoDb/repositories/jobDB");
 const cloudinaryConfig_1 = __importDefault(require("../middlewares/cloudinaryConfig"));
 const userRouter = () => {
     const router = express_1.default.Router();

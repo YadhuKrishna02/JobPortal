@@ -1,5 +1,5 @@
 import mongoose, { Types } from 'mongoose';
-import { applicantDB } from '../../frameworks/database/mongoDB/repositories/applicantDB';
+import { applicantDB } from '../../frameworks/database/mongoDb/repositories/applicantDB';
 
 export const applicantDbInterface = (repository: ReturnType<applicantDB>) => {
   const addApplicant = async (

@@ -10,8 +10,7 @@ import {
 import { RecruiterDbInterface } from '../../repositories/recruiterDbInterface';
 import { profileDbInterface } from '../../repositories/userProfileInterface';
 import { recProfileDbInterface } from '../../repositories/recruiterProfileInterface';
-import { GoogleUserInteface } from '../../../types/googleUserInterface';
-import { userRepositoryMongoDB } from '../../../frameworks/database/mongoDb/repositories/userRepositoryMongoDB';
+
 import { ObjectId, Types } from 'mongoose';
 
 export const userRegister = async (

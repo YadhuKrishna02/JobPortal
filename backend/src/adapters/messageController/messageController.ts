@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import asyncHandler from 'express-async-handler';
 import { resolve } from 'path';
 import { messageDbInterfaceType } from '../../application/repositories/messageDbInterface';
-import { messageRepositoryType } from '../../frameworks/database/Mongodb/repositories/messageRepository';
+import { messageRepositoryType } from '../../frameworks/database/mongoDb/repositories/messageRepository';
 import {
   messageAdd,
   getMessage,

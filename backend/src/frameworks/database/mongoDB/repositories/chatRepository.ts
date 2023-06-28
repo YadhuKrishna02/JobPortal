@@ -1,4 +1,3 @@
-import { type } from 'os';
 import Chat from '../models/chatModel';
 
 export const chatRepositoryImp = () => {

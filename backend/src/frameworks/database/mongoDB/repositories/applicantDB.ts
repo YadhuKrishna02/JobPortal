@@ -1,6 +1,6 @@
 import mongoose, { Types } from 'mongoose';
-import Job from '../models/jobModel';
-import UserProfile from '../models/userProfile';
+import { Job } from '../models/jobModel';
+import { UserProfile } from '../models/userProfile';
 import AppError from '../../../../utils/appError';
 import { HttpStatus } from '../../../../types/httpStatus';
 // import { JobInterface } from '../../../../types/jobInterface';

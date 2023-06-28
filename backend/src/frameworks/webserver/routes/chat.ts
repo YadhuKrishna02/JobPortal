@@ -1,7 +1,7 @@
 import express from 'express';
 import chatController from '../../../adapters/chatController/chatController';
 import { chatDbInterface } from '../../../application/repositories/chatDbRepsitoryInterface';
-import { chatRepositoryImp } from '../../database/Mongodb/repositories/chatRepository';
+import { chatRepositoryImp } from '../../database/mongoDb/repositories/chatRepository';
 const chatRouter = () => {
   const router = express.Router();
 

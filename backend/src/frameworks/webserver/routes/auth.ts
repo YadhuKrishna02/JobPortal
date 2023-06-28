@@ -5,11 +5,11 @@ import { authServiceInterface } from '../../../application/services/authServiceI
 import { userRepositoryMongoDB } from '../../database/mongoDb/repositories/userRepositoryMongoDB';
 import { authService } from '../../services/authService';
 import { recruiterDbInterface } from '../../../application/repositories/recruiterDbInterface';
-import { recruiterDB } from '../../database/mongoDB/repositories/recruiterDB';
-import { userProfileDb } from '../../database/mongoDB/repositories/userProfile';
+import { recruiterDB } from '../../database/mongoDb/repositories/recruiterDB';
+import { userProfileDb } from '../../database/mongoDb/repositories/userProfile';
 import { profileDbInterface } from '../../../application/repositories/userProfileInterface';
 import { recProfileDbInterface } from '../../../application/repositories/recruiterProfileInterface';
-import { recProfileDb } from '../../database/mongoDB/repositories/recruiterProfile';
+import { recProfileDb } from '../../database/mongoDb/repositories/recruiterProfile';
 
 const authRouter = () => {
   const router = express.Router();

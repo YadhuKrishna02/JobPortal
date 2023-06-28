@@ -4,17 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.applicantDB = void 0;
-const jobModel_1 = __importDefault(require("../models/jobModel"));
-const userProfile_1 = __importDefault(require("../models/userProfile"));
+const jobModel_1 = require("../models/jobModel");
+const userProfile_1 = require("../models/userProfile");
 const appError_1 = __importDefault(require("../../../../utils/appError"));
 const httpStatus_1 = require("../../../../types/httpStatus");
 // import { JobInterface } from '../../../../types/jobInterface';
 const applicantDB = () => {
     const addApplicant = async (applicantId, jobId) => {
         console.log(applicantId, 'tyyyy');
-        const userProfile = await userProfile_1.default.findOne({ _id: applicantId });
+        const userProfile = await userProfile_1.UserProfile.findOne({ _id: applicantId });
         console.log(userProfile, 'ioioioioio');
-        const userjob = await jobModel_1.default.findById(jobId);
+        const userjob = await jobModel_1.Job.findById(jobId);
         if (!userjob || !userProfile) {
             throw new appError_1.default('Invalid job or user profile', httpStatus_1.HttpStatus.BAD_REQUEST);
         }

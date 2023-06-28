@@ -1,4 +1,4 @@
-import { recProfileDb } from '../../frameworks/database/mongoDB/repositories/recruiterProfile';
+import { recProfileDb } from '../../frameworks/database/mongoDb/repositories/recruiterProfile';
 import { recruiterProfileInterface } from '../../types/recrProfileInterface';
 
 export const recProfileDbInterface = (repository: ReturnType<recProfileDb>) => {

@@ -1,7 +1,6 @@
-import { recruiterDB } from '../../frameworks/database/mongoDB/repositories/recruiterDB';
+import { recruiterDB } from '../../frameworks/database/mongoDb/repositories/recruiterDB';
 import { recruiterInterface } from '../../types/recruiterInterface';
-import { recruiterProfileInterface } from '../../types/recrProfileInterface';
-import Recruiter from '../../frameworks/database/mongoDB/models/recruiterModel';
+import { Recruiter } from '../../frameworks/database/mongoDb/models/recruiterModel';
 import { Types } from 'mongoose';
 
 export const recruiterDbInterface = (repository: ReturnType<recruiterDB>) => {

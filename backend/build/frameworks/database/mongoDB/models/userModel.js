@@ -28,7 +28,7 @@ const userSchema = new mongoose_1.Schema({
     },
     profileId: {
         type: String,
-        ref: 'UserProfile'
+        ref: 'UserProfile',
     },
     // confirmationToken: {
     //   type: String,

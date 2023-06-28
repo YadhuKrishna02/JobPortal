@@ -64,5 +64,4 @@ const jobSchema = new Schema(
   { timestamps: true }
 );
 
-const Job = model('Job', jobSchema);
-export default Job;
+export const Job = model('Job', jobSchema);

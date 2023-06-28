@@ -1,11 +1,11 @@
 import express from 'express';
 import userController from '../../../adapters/userController/userController';
-import { userProfileDb } from '../../database/mongoDB/repositories/userProfile';
+import { userProfileDb } from '../../database/mongoDb/repositories/userProfile';
 import { profileDbInterface } from '../../../application/repositories/userProfileInterface';
 import { applicantDbInterface } from '../../../application/repositories/applicantDbInterface';
-import { applicantDB } from '../../database/mongoDB/repositories/applicantDB';
+import { applicantDB } from '../../database/mongoDb/repositories/applicantDB';
 import { jobDbInterface } from '../../../application/repositories/jobDbInterface';
-import { jobDB } from '../../database/mongoDB/repositories/jobDB';
+import { jobDB } from '../../database/mongoDb/repositories/jobDB';
 import upload from '../middlewares/cloudinaryConfig';
 
 const userRouter = () => {

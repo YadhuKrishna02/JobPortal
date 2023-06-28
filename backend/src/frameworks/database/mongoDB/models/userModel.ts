@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
 const userSchema = new Schema(
   {
@@ -29,7 +29,7 @@ const userSchema = new Schema(
     },
     profileId: {
       type: String,
-      ref:'UserProfile'
+      ref: 'UserProfile',
     },
     // confirmationToken: {
     //   type: String,

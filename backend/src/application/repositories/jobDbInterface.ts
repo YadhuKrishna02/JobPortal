@@ -1,5 +1,5 @@
 import { FilterQuery, Types } from 'mongoose';
-import { jobDB } from '../../frameworks/database/mongoDB/repositories/jobDB';
+import { jobDB } from '../../frameworks/database/mongoDb/repositories/jobDB';
 import { JobInterface } from '../../types/jobInterface';
 
 export const jobDbInterface = (repository: ReturnType<jobDB>) => {

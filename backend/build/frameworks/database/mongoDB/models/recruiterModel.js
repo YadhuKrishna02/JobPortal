@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Recruiter = void 0;
 const mongoose_1 = require("mongoose");
 const recruiterSchema = new mongoose_1.Schema({
     companyName: {
@@ -34,5 +35,4 @@ const recruiterSchema = new mongoose_1.Schema({
         ref: 'RecruiterProfile',
     },
 }, { timestamps: true });
-const Recruiter = (0, mongoose_1.model)('Recruiter', recruiterSchema);
-exports.default = Recruiter;
+exports.Recruiter = (0, mongoose_1.model)('Recruiter', recruiterSchema);

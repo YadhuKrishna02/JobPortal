@@ -1,6 +1,6 @@
-import UserProfile from '../models/userProfile';
+import { UserProfile } from '../models/userProfile';
 import { UserProfileInterface } from '../../../../types/userProfileInterface';
-import Job from '../models/jobModel';
+import { Job } from '../models/jobModel';
 
 export const userProfileDb = () => {
   const addProfile = async (profileData: UserProfileInterface) => {
