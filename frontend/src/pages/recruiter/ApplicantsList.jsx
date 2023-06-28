@@ -25,14 +25,29 @@ const ApplicantsList = () => {
       senderId: senderId,
       receiverId: receiverId,
     };
-    // formData.append('senderId', senderId);
-    // formData.append('receiverId', receiverId);
-    // console.log(senderId, receiverId, 'llllllllll');
-    console.log('clickedddddddddddddddddddddddddddddddddddddd');
+
     const result = dispatch(createChat(formData));
     if (result) {
       navigate('/recruiter/chat');
     }
+  };
+
+  //video call
+  const handleVideoCall = async (roomId) => {
+    console.log(roomId, 'rooooom');
+    const roomUrl = `http://localhost:5173/room/${roomId}`;
+    const message = `Join this room to video chat: ${roomUrl}`;
+    const event = {
+      preventDefault: () => {},
+      message: message,
+    };
+    // await handleSend(event);
+    navigate(`/recruiter/room/${roomId}`);
+    console.log('Video call initiated');
+  };
+
+  const handleCVClick = (resume) => {
+    window.open(resume, '_blank');
   };
   useEffect(() => {
     const fetchApplicants = async () => {
@@ -72,7 +87,11 @@ const ApplicantsList = () => {
             name={applicant.firstName}
             email={applicant.email}
             phoneNumber={applicant.contactNumber}
+            onCVClick={() => handleCVClick(applicant.resume)}
             onChatButtonClick={() => handleChatButtonClick(applicant._id)}
+            onVideoButtonClick={() => handleVideoCall(applicant._id)}
+            applicantId={applicant._id}
+            jobId={jobId}
           />
         ))
       )}

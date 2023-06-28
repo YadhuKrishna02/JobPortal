@@ -11,10 +11,13 @@ import { ApplyJob } from '../../application/use-cases/job/job';
 import { AppliedJobs } from '../../application/use-cases/job-seeker/editProfile';
 import { JobDbInterface } from '../../application/repositories/jobDbInterface';
 import { jobDB } from '../../frameworks/database/mongoDB/repositories/jobDB';
+import { FilteredJobs } from '../../application/use-cases/job/job';
 import { AllJobs } from '../../application/use-cases/job/job';
+import { GetStatus } from '../../application/use-cases/job-seeker/editProfile';
 import cloudinary from 'cloudinary';
 import fs from 'fs';
-import mongoose, { Types } from 'mongoose';
+import mongoose, { FilterQuery, Types } from 'mongoose';
+import { JobInterface } from '../../types/jobInterface';
 
 const userController = (
   userProfileInterface: profileDbInterface,
@@ -74,6 +77,7 @@ const userController = (
     const jobApply = await ApplyJob(applicantId, jobId, applicantRepository);
     console.log(jobApply, 'kokok');
     res.json({
+      jobApply,
       status: 'success',
       message: 'job applied successfully',
     });
@@ -83,6 +87,7 @@ const userController = (
     const { profileId } = req.params;
 
     const jobs = await AppliedJobs(profileId, dbRepositoryProfile);
+
     res.json({
       status: 'success',
       message: 'jobs fetched successfully',
@@ -94,11 +99,60 @@ const userController = (
 
   const allJobs = asyncHandler(async (req: Request, res: Response) => {
     const jobs = await AllJobs(jobRepository);
+
+    res.json({
+      status: 'success',
+      message: 'jobs fetched successfully',
+      jobs,
+    });
+  });
+
+  //get status
+  const getStatus = asyncHandler(async (req: Request, res: Response) => {
+    const { applicantId, jobId } = req.query;
+    const statusResponse = await GetStatus(
+      applicantId,
+      jobId,
+      dbRepositoryProfile
+    );
+    console.log(statusResponse, 'rrrrrrr');
+
+    res.json({
+      status: 'success',
+      message: 'status fetched successfully',
+      statusResponse,
+    });
+  });
+
+  //filtered jobs
+
+  const filteredJobs = asyncHandler(async (req: Request, res: Response) => {
+    const { jobLocation, salary, jobTitle } = req.query;
+    const query: FilterQuery<JobInterface> = {};
+    if (jobLocation) {
+      query.jobLocation = jobLocation;
+    }
+
+    if (jobTitle) {
+      query.jobTitle = jobTitle;
+    }
+
+    if (salary) {
+      query.salary = { $gte: Number(salary) }; // Assuming salary is a numeric field
+    }
+    const jobs = await FilteredJobs(query, jobRepository);
+    console.log(jobs, 'jooooooooooooo');
+
     if (jobs.length > 0) {
       res.json({
-        status: 'success',
-        message: 'jobs fetched successfully',
         jobs,
+        status: 'success',
+        message: 'jobs filtered successfully',
+      });
+    } else {
+      res.json({
+        status: 'fail',
+        message: 'No matching Jobs found',
       });
     }
   });
@@ -109,6 +163,8 @@ const userController = (
     applyJob,
     getAppliedJobs,
     allJobs,
+    filteredJobs,
+    getStatus,
   };
 };
 

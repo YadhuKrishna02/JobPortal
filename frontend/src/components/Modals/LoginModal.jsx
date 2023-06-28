@@ -161,11 +161,7 @@ export default function LoginModal({ handleClose, open, handleSignUp }) {
                 Sign In with Google
               </Button>
             </form>
-            <Typography>
-              <Link sx={{ textDecoration: 'none' }} href="#">
-                Forgot Password ?
-              </Link>
-            </Typography>
+
             <Typography>
               Do you have an account ?
               <Link

@@ -1,5 +1,7 @@
 import express from 'express';
 import jobController from '../../../adapters/jobController/jobController';
+import { nodeMailerInterface } from '../../../application/services/nodeMailerInterface';
+import { nodeMailerService } from '../../services/nodeMailer';
 import {
   JobDbInterface,
   jobDbInterface,
@@ -17,7 +19,9 @@ const recruiterRouter = () => {
     jobDbInterface,
     jobDB,
     recProfileDbInterface,
-    recProfileDb
+    recProfileDb,
+    nodeMailerInterface,
+    nodeMailerService
   );
 
   router.post('/create_job', controller.postJob);
@@ -31,6 +35,10 @@ const recruiterRouter = () => {
   router.put('/edit_profile/:id', uploadLogo, controller.editProfile);
 
   router.get('/applicants_list/:jobId', controller.getApplicants);
+
+  router.post('/change_applicant_status', controller.changeStatus);
+
+  router.post('/interview_link', controller.sendInterviewLink);
 
   return router;
 };

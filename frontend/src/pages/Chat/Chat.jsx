@@ -31,7 +31,6 @@ const Chat = () => {
     appId: userId,
   };
   const currentUserId = recruiterId ? recId : usId;
-  console.log(currentUserId, ';;;;');
   const [chats, setChats] = useState([]);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
@@ -58,7 +57,6 @@ const Chat = () => {
       }
     };
   }, [Id, receiveMessage]);
-  console.log(receiveMessage, 'reeeeeeeee');
   useEffect(() => {
     if (sendMessage !== null) {
       socket.current.emit('send-message', sendMessage);
@@ -89,7 +87,7 @@ const Chat = () => {
 
   return (
     <>
-      <div className="Chat" style={{ marginTop: '6rem' }}>
+      <div className="Chat" style={{ marginTop: '1rem' }}>
         {/* <Box m='2rem 0' /> */}
 
         {/* Left Side */}

@@ -9,22 +9,19 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsers } from '../../redux/chat/chatSlice';
 
 const ViewProfile = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const profileId = useSelector((state) => state?.users?.users?.applicantId);
   const [profileData, setProfileData] = useState(null);
   useEffect(() => {
     const getUserData = async () => {
       try {
         const profile = await dispatch(getUsers(profileId));
-        console.log(
-          profile?.payload?.data?.userProfile?.profileId,
-          'pro22222222'
-        );
         setProfileData(profile?.payload?.data?.userProfile?.profileId);
       } catch (error) {
         console.log(error);
@@ -32,7 +29,7 @@ const ViewProfile = () => {
     };
     getUserData();
   }, [profileId, dispatch]);
-
+  console.log(profileData, 'proffffffffff');
   const handlePreviewResume = () => {
     window.open(profileData.resume, '_blank');
   };
@@ -55,7 +52,11 @@ const ViewProfile = () => {
     <Container maxWidth="md" sx={{ py: 6 }}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom>
+          <Typography
+            variant="h4"
+            gutterBottom
+            onClick={() => navigate('/applied_jobs')}
+          >
             My Profile
           </Typography>
         </Grid>

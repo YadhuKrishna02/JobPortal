@@ -11,10 +11,14 @@ export const profileDbInterface = (repository: ReturnType<userProfileDb>) => {
   const getAppliedJobs = async (profileId: string) =>
     await repository.getAppliedJobs(profileId);
 
+  const getStatus = async (applicantId: string, jobId: string) =>
+    await repository.getStatus(applicantId, jobId);
+
   return {
     editProfile,
     addProfile,
     getAppliedJobs,
+    getStatus,
   };
 };
 

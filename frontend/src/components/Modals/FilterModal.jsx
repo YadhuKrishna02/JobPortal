@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import { useSelector } from 'react-redux';
 import {
   Button,
   Modal,
-  TextField,
   FormControl,
   InputLabel,
   Select,
@@ -38,8 +38,12 @@ const FilterModal = ({ onFilter }) => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [salaryFilter, setSalaryFilter] = useState('');
-  const [locationFilter, setLocationFilter] = useState('');
+  const [jobLocationFilter, setJobLocationFilter] = useState('');
   const [jobTitleFilter, setJobTitleFilter] = useState('');
+  const jobs = useSelector((state) =>
+    state?.appliedJobs?.jobs ? state?.appliedJobs?.jobs : []
+  );
+  console.log(jobs, 'kkkkkkkkkk');
 
   const handleOpen = () => {
     setOpen(true);
@@ -52,12 +56,25 @@ const FilterModal = ({ onFilter }) => {
   const handleFilter = () => {
     const filters = {
       salary: salaryFilter,
-      location: locationFilter,
       jobTitle: jobTitleFilter,
+      location: jobLocationFilter,
     };
     onFilter(filters);
+
+    // const response = dispatch(filteredJobs(filters));
     handleClose();
   };
+
+  // Extract unique values from the jobs array for location, job title, and salary
+  const uniqueLocations = [
+    ...new Set(jobs?.length > 0 ? jobs?.map((job) => job?.jobLocation) : ''),
+  ];
+  const uniqueJobTitles = [
+    ...new Set(jobs?.length > 0 ? jobs?.map((job) => job?.jobTitle) : ''),
+  ];
+  const uniqueSalaries = [
+    ...new Set(jobs?.length > 0 ? jobs?.map((job) => job?.salary) : ''),
+  ];
 
   return (
     <div
@@ -88,23 +105,45 @@ const FilterModal = ({ onFilter }) => {
               onChange={(e) => setSalaryFilter(e.target.value)}
             >
               <MenuItem value="">Any</MenuItem>
-              <MenuItem value="$0 - $500">$0 - $500</MenuItem>
-              <MenuItem value="$500 - $1000">$500 - $1000</MenuItem>
-              <MenuItem value="$1000+">$1000+</MenuItem>
+              {uniqueSalaries.map((salary) => (
+                <MenuItem key={salary} value={salary}>
+                  {salary}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
-          <TextField
-            label="Location"
-            value={locationFilter}
-            onChange={(e) => setLocationFilter(e.target.value)}
-            fullWidth
-          />
-          <TextField
-            label="Job Title"
-            value={jobTitleFilter}
-            onChange={(e) => setJobTitleFilter(e.target.value)}
-            fullWidth
-          />
+          <FormControl className={classes.formControl}>
+            <InputLabel id="location-filter-label">Location</InputLabel>
+            <Select
+              labelId="location-filter-label"
+              id="location-filter"
+              value={jobLocationFilter}
+              onChange={(e) => setJobLocationFilter(e.target.value)}
+            >
+              <MenuItem value="">Any</MenuItem>
+              {uniqueLocations.map((jobLocation) => (
+                <MenuItem key={jobLocation} value={jobLocation}>
+                  {jobLocation}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl className={classes.formControl}>
+            <InputLabel id="job-title-filter-label">Job Title</InputLabel>
+            <Select
+              labelId="job-title-filter-label"
+              id="job-title-filter"
+              value={jobTitleFilter}
+              onChange={(e) => setJobTitleFilter(e.target.value)}
+            >
+              <MenuItem value="">Any</MenuItem>
+              {uniqueJobTitles.map((title) => (
+                <MenuItem key={title} value={title}>
+                  {title}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <div
             className={classes.buttonContainer}
             style={{

@@ -9,7 +9,6 @@ import { getUsers } from '../../redux/chat/chatSlice';
 // import UserImage from '../UserImage/UserImage';
 
 const Conversation = ({ data, currentUserId, online }) => {
-  console.log(currentUserId, 'yadddddddd');
   const chatAuthId = currentUserId.recId
     ? currentUserId.recId
     : currentUserId.appId;
@@ -19,24 +18,20 @@ const Conversation = ({ data, currentUserId, online }) => {
   const token = useSelector((state) => state?.recruiters?.recruiters?.token);
   useEffect(() => {
     const userId = data?.members.find((id) => id !== chatAuthId);
-    console.log(userId, 'uuuuuuuuuuuuu');
     const userIdIndex = data?.members.indexOf(userId);
     const getUserData = async () => {
       try {
         if (userIdIndex == 0) {
           const data = await dispatch(getRecruiter(userId));
-          console.log(data, 'dddddddddddd');
           setRecruiterData(data?.payload?.data?.recDetails);
         } else {
           const data = await dispatch(getUsers(userId));
-          console.log(data, 'eeeeeeeeee');
           setUserData(data?.payload?.data?.userProfile);
         }
       } catch (error) {
         console.log(error);
       }
     };
-    console.log(userData, 'podaaaaa');
 
     getUserData();
   }, []);

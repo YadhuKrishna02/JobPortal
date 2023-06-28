@@ -10,24 +10,47 @@ export const applicantDB = () => {
     applicantId: mongoose.Types.ObjectId,
     jobId: Types.ObjectId
   ) => {
-    const job = await Job.findById(jobId);
-    const userProfile = await UserProfile.findOne({ applicantId });
+    console.log(applicantId, 'tyyyy');
+    const userProfile: any = await UserProfile.findOne({ _id: applicantId });
+    console.log(userProfile, 'ioioioioio');
 
-    if (!job || !userProfile) {
+    const userjob = await Job.findById(jobId);
+
+    if (!userjob || !userProfile) {
       throw new AppError('Invalid job or user profile', HttpStatus.BAD_REQUEST);
     }
 
-    const alreadyApplied = job.appliedUsers.includes(applicantId);
-    if (alreadyApplied) {
-      throw new AppError('Already applied', HttpStatus.BAD_REQUEST);
+    const appliedJobs = userProfile.appliedJobs;
+    // console.log(appliedJobs, 'lllllllllll');
+
+    const jobExists = appliedJobs.some(
+      (appliedJob: any) => appliedJob._id == jobId
+    );
+
+    if (!jobExists) {
+      appliedJobs.push({ _id: jobId, status: 'pending' });
+      // userProfile.appliedJobs = appliedJobs;
     }
 
-    job.appliedUsers.push(applicantId);
-    userProfile.appliedJobs.push(jobId);
+    const applicants = userjob.appliedUsers;
+    if (!applicants.includes(applicantId)) {
+      applicants.push(applicantId);
+      userjob.appliedUsers = applicants;
+    }
 
-    return await Promise.all([job.save(), userProfile.save()]).then(
+    // const alreadyApplied = job.appliedUsers.includes(applicantId);
+    // if (alreadyApplied) {
+    //   throw new AppError('Already applied', HttpStatus.BAD_REQUEST);
+    // }
+
+    // job.appliedUsers.push(applicantId);
+    // userProfile.appliedJobs.push(jobId);
+
+    return await Promise.all([userjob.save(), userProfile.save()]).then(
       (result) => {
-        console.log(result, 'llll');
+        // console.log(result, 'yoooooo');
+
+        return result;
       }
     );
   };

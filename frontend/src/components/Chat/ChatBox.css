@@ -55,6 +55,7 @@
   padding: 0.8rem;
   border-radius: 1rem;
   align-self: end;
+  margin-bottom: 4rem;
 }
 
 .chat-sender > input {

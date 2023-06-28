@@ -1,4 +1,4 @@
-import { Types } from 'mongoose';
+import { FilterQuery, Types } from 'mongoose';
 import { jobDB } from '../../frameworks/database/mongoDB/repositories/jobDB';
 import { JobInterface } from '../../types/jobInterface';
 
@@ -17,8 +17,18 @@ export const jobDbInterface = (repository: ReturnType<jobDB>) => {
 
   const getAllJobs = async () => await repository.getAllJobs();
 
-  const getJobByRecId = async (recId: string) =>
-    await repository.getJobByRecId(recId);
+  const getJobByRecId = async (recId: string) => {
+    return await repository.getJobByRecId(recId);
+  };
+
+  const getFilteredJobs = async (query: FilterQuery<JobInterface>) =>
+    await repository.getFilteredJobs(query);
+
+  const statusChange = async (
+    jobId: string,
+    applicantId: string,
+    status: string
+  ) => await repository.changeStatus(jobId, applicantId, status);
 
   return {
     addJob,
@@ -28,6 +38,8 @@ export const jobDbInterface = (repository: ReturnType<jobDB>) => {
     getApplicants,
     getAllJobs,
     getJobByRecId,
+    getFilteredJobs,
+    statusChange,
   };
 };
 

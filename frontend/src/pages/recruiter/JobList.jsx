@@ -1,19 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import {
-  Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  CircularProgress,
-} from '@material-ui/core';
+import { Typography, CircularProgress } from '@material-ui/core';
 import { useNavigate } from 'react-router-dom';
 import Pagination from '@mui/material/Pagination';
 import { useDispatch } from 'react-redux';
-import { DeleteJob, GetJobById } from '../../redux/recruiter/jobSlice';
 import JobContainer from '../../components/AdminJob/JobCard';
+import { getJobById } from '../../redux/recruiter/jobSlice';
 import slugify from 'slugify';
 
 const JobPage = () => {
@@ -25,20 +17,7 @@ const JobPage = () => {
 
   const [page, setPage] = useState(1);
   const [rowsPerPage] = useState(3);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [selectedJobId, setSelectedJobId] = useState(null);
   const [loading, setLoading] = useState(true); // Loading state for fetching jobs
-
-  useEffect(() => {
-    const getJobs = async () => {
-      try {
-        const response = await dispatch(GetJobById(recruiterId));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getJobs();
-  }, [dispatch]);
 
   useEffect(() => {
     // Simulating an asynchronous fetch request
@@ -51,14 +30,27 @@ const JobPage = () => {
     setPage(newPage);
   };
 
-  const jobs = useSelector((state) => state?.jobs?.jobsById);
-  console.log(jobs, 'jjjjjjjj');
-  const displayJobs = jobs.slice(
-    (page - 1) * rowsPerPage,
-    (page - 1) * rowsPerPage + rowsPerPage
-  );
-  console.log(displayJobs, 'sisssssss');
+  useEffect(() => {
+    const getJobs = () => {
+      dispatch(getJobById(recruiterId))
+        .then((response) => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    getJobs();
+  }, []);
 
+  const jobs = useSelector((state) => state?.jobs?.jobsById);
+  console.log(jobs, 'lolololo');
+  const displayJobs = Array.isArray(jobs)
+    ? jobs.slice(
+        (page - 1) * rowsPerPage,
+        (page - 1) * rowsPerPage + rowsPerPage
+      )
+    : [];
+
+  console.log(displayJobs, 'disssssss');
   const handleEditClick = (jobId, jobTitle) => {
     const slug = slugify(jobTitle, { lower: true });
     navigate(`/recruiter/edit_job/${slug}`);
@@ -66,20 +58,6 @@ const JobPage = () => {
 
   const handleApplicantsClick = (jobId) => {
     navigate(`/recruiter/view_applicants?jobId=${jobId}`);
-  };
-
-  const handleDeleteClick = async (jobId) => {
-    setSelectedJobId(jobId);
-    setDialogOpen(true);
-  };
-
-  const handleConfirmDelete = async () => {
-    await dispatch(DeleteJob(selectedJobId));
-    setDialogOpen(false);
-  };
-
-  const handleCancelDelete = () => {
-    setDialogOpen(false);
   };
 
   return (
@@ -107,8 +85,8 @@ const JobPage = () => {
           >
             <CircularProgress />
           </div>
-        ) : (
-          displayJobs.map((job) => (
+        ) : displayJobs?.length > 0 ? (
+          displayJobs?.map((job) => (
             <JobContainer
               companyLogo="logo"
               key={job?._id}
@@ -118,29 +96,21 @@ const JobPage = () => {
               jobDescription={job?.essentialKnowledge}
               salaryPackage={job?.salary}
               onEditClick={() => handleEditClick(job?._id, job?.jobTitle)}
-              onDeleteClick={() => handleDeleteClick(job?._id)}
               onApplicantsClick={() => handleApplicantsClick(job?._id)}
             />
           ))
+        ) : (
+          // No jobs available
+          <Typography
+            variant="body1"
+            style={{ textAlign: 'center', marginTop: '1rem' }}
+          >
+            No jobs available.
+          </Typography>
         )}
-
-        <Dialog open={dialogOpen} onClose={handleCancelDelete}>
-          <DialogTitle>Confirm Delete</DialogTitle>
-          <DialogContent>
-            <Typography>Are you sure you want to delete this job?</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCancelDelete} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleConfirmDelete} color="primary">
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
       </div>
       <Pagination
-        count={Math.ceil(jobs.length / rowsPerPage)}
+        count={Math.ceil(jobs?.length / rowsPerPage)}
         page={page}
         onChange={handleChangePage}
         sx={{ display: 'flex', justifyContent: 'center', marginRight: '35rem' }}

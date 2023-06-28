@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import recruiterApi from '../../common/apis/recruiterApi';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const createJob = createAsyncThunk(
   'jobs/addAsyncRecruiter',
   async (payload) => {
@@ -30,21 +31,10 @@ export const EditJob = createAsyncThunk(
   }
 );
 
-export const DeleteJob = createAsyncThunk('jobs/DeleteJob', async (jobId) => {
-  try {
-    const response = await recruiterApi.delete(`/delete_job/${jobId}`);
-    console.log(response.data, 'responseDelete');
-    return response.data;
-  } catch (error) {
-    const errorMessage = error?.response?.data?.message;
-    throw new Error(errorMessage);
-  }
-});
-
-export const GetJobById = createAsyncThunk('jobs/GetJobById', async (recId) => {
+// eslint-disable-next-line react-refresh/only-export-components
+export const getJobById = createAsyncThunk('jobs/getJobById', async (recId) => {
   try {
     const response = await recruiterApi.get(`/view_job/${recId}`);
-    console.log(response?.data?.getJob, 'lalalla');
     return response?.data?.getJob;
   } catch (error) {
     console.log(error);
@@ -77,15 +67,12 @@ const jobSlice = createSlice({
           state.jobs[jobIndex].job = payload.editedJob;
         }
       })
-      .addCase(DeleteJob.fulfilled, (state, { payload }) => {
-        const deletedJobId = payload.deletedJob._id;
-        state.jobs = state.jobs.filter((job) => job.job._id !== deletedJobId);
-      })
 
       .addCase(createJob.rejected, (state, { error }) => {
         state.error = error.message;
       })
-      .addCase(GetJobById.fulfilled, (state, { payload }) => {
+      .addCase(getJobById.fulfilled, (state, { payload }) => {
+        console.log(payload, 'payyyyyyyyy');
         state.jobsById = payload;
       });
   },

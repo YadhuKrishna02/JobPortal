@@ -24,7 +24,19 @@ const userProfileSchema = new mongoose.Schema({
     type: String,
   },
   appliedJobs: {
-    type: Array,
+    type: [
+      {
+        _id: {
+          type: String,
+          ref: 'Job',
+        },
+        status: {
+          type: String,
+          default: 'pending',
+        },
+      },
+    ],
+    ref: 'Job',
   },
 });
 

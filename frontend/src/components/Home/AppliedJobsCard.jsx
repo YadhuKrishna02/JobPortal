@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { useState } from 'react';
 import { format } from 'timeago.js';
 
 import {
@@ -10,13 +9,19 @@ import {
   Avatar,
   Chip,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
 } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import { useState } from 'react';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import DescriptionIcon from '@material-ui/icons/Description';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import ScheduleIcon from '@material-ui/icons/Schedule';
+import { fetchStatus } from '../../redux/user/jobSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -55,9 +60,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
   },
 
-  salary: {
-    // color: theme.palette.success.main,
-  },
   buttons: {
     position: 'absolute',
     bottom: theme.spacing(1),
@@ -70,6 +72,18 @@ const useStyles = makeStyles((theme) => ({
   deleteButton: {
     color: theme.palette.error.main,
   },
+  visibilityButton: {
+    marginRight: '2rem',
+  },
+  selectedBackground: {
+    backgroundColor: '#80ed99',
+  },
+  rejectBackground: {
+    backgroundColor: '#d00000',
+  },
+  shortlistBackground: {
+    backgroundColor: '#90e0ef',
+  },
 }));
 
 const JobContainer = ({
@@ -78,24 +92,59 @@ const JobContainer = ({
   jobDescription,
   salaryPackage,
   jobLocation,
-  onApplicantsClick,
   jobId,
   timeAgo,
-  appliedJobs,
-  ApplicantId,
 }) => {
   const classes = useStyles();
-  const isApplied = appliedJobs?.appliedUsers?.some((id) => {
-    return id == ApplicantId;
-  });
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState('');
 
-  const handleApplyClick = () => {
-    onApplicantsClick(jobId); // Invoke the function with the jobId
+  const applicantId = useSelector((state) => state?.users?.profile?._id);
+
+  const handleVisibilityClick = async () => {
+    setOpen(true);
+
+    const result = await dispatch(fetchStatus({ jobId, applicantId }));
+    setStatus(result?.payload);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const getDialogBackground = () => {
+    switch (status) {
+      case 'Selected':
+        return classes.selectedBackground;
+      case 'Rejected':
+        return classes.rejectBackground;
+      case 'Shortlisted':
+        return classes.shortlistBackground;
+      default:
+        return '';
+    }
   };
 
   return (
     <>
       <Container maxWidth="md" className={classes.container}>
+        <Button
+          variant="contained"
+          className={classes.visibilityButton}
+          onClick={handleVisibilityClick}
+        >
+          View
+        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          classes={{ paper: getDialogBackground() }}
+        >
+          <DialogTitle>{status ? status : 'Pending'}</DialogTitle>
+          <DialogContent className={classes.popupContent}>
+            {/* Add your content for the applied job status here */}
+            {/* This can include any relevant information about the job status */}
+          </DialogContent>
+        </Dialog>
         <Avatar alt="Company Logo" className={classes.logo} />
         <Grid container direction="column" spacing={2}>
           <Grid item className={classes.jobTitleContainer}>
@@ -146,7 +195,7 @@ const JobContainer = ({
             </Typography>
           </Grid>
           <Grid item className={classes.skills}>
-            {requiredSkills.map((skill, index) => (
+            {requiredSkills?.map((skill, index) => (
               <Chip
                 key={index}
                 label={skill}
@@ -178,27 +227,6 @@ const JobContainer = ({
             </Typography>
           </Grid>
         </Grid>
-
-        <div className={classes.buttons}>
-          {isApplied ? (
-            <Button
-              variant="outlined"
-              className={classes.appliedButton}
-              style={{ backgroundColor: '#b9fbc0' }}
-            >
-              Applied
-            </Button>
-          ) : (
-            <Button
-              variant="outlined"
-              startIcon={<SendIcon />}
-              className={classes.applyButton}
-              onClick={handleApplyClick}
-            >
-              Apply Now
-            </Button>
-          )}
-        </div>
         <Button
           variant="contained"
           startIcon={
@@ -225,8 +253,6 @@ JobContainer.propTypes = {
   jobId: PropTypes.string.isRequired,
   timeAgo: PropTypes.string.isRequired,
   onApplicantsClick: PropTypes.func.isRequired,
-  appliedJobs: PropTypes.array.isRequired,
-  ApplicantId: PropTypes.string.isRequired,
 };
 
 export default JobContainer;

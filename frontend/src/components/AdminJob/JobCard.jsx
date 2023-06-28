@@ -87,7 +87,6 @@ const JobContainer = ({
   salaryPackage,
   jobLocation,
   onEditClick,
-  onDeleteClick,
   onApplicantsClick,
 }) => {
   const classes = useStyles();
@@ -123,7 +122,7 @@ const JobContainer = ({
         <Grid item>
           <Typography variant="body2" className={classes.salary}>
             <span className={classes.rupeeIcon}>₹</span>
-            {salaryPackage} LPA
+            {salaryPackage}
           </Typography>
         </Grid>
       </Grid>
@@ -136,14 +135,6 @@ const JobContainer = ({
           onClick={onEditClick}
         >
           Edit
-        </Button>
-        <Button
-          variant="outlined"
-          startIcon={<DeleteIcon />}
-          className={classes.deleteButton}
-          onClick={onDeleteClick}
-        >
-          Delete
         </Button>
       </div>
       <Button

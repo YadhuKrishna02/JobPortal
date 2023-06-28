@@ -5,12 +5,17 @@ import {
   Typography,
   Grid,
   Avatar,
-  Chip,
+  InputLabel,
+  Select,
   Button,
+  MenuItem,
 } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import ChatIcon from '@material-ui/icons/Chat';
 import VideoCallIcon from '@material-ui/icons/VideoCall';
+import { useDispatch } from 'react-redux';
+import { changeApplicantsStatus } from '../../redux/recruiter/recruiterSlice';
+import { useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -26,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
       width: '40rem',
     },
     position: 'relative',
+    height: '12rem', // Increased height
   },
   logo: {
     marginRight: theme.spacing(2),
@@ -68,20 +74,74 @@ const useStyles = makeStyles((theme) => ({
   phoneNumber: {
     marginTop: '10px',
   },
+  status: {
+    marginBottom: theme.spacing(1),
+    marginRight: '2rem',
+  },
+  changeStatus: {
+    marginTop: '2rem',
+  },
 }));
 
 const ApplicantCard = (props) => {
-  const { name, email, phoneNumber, onChatButtonClick } = props;
+  const {
+    name,
+    email,
+    phoneNumber,
+    onChatButtonClick,
+    onCVClick,
+    onVideoButtonClick,
+    applicantId,
+    jobId,
+  } = props;
+
+  const dispatch = useDispatch();
   const handleChatButtonClick = () => {
-    // Call the callback function passed from the parent component
     if (onChatButtonClick) {
       onChatButtonClick();
     }
   };
+
+  const [applicationStatus, setApplicationStatus] = useState('');
+
+  const handleStatusChange = (event) => {
+    setApplicationStatus(event.target.value);
+  };
+
+  const handleStatusSubmit = async () => {
+    console.log(applicationStatus, 'aplliiiiii');
+    const response = await dispatch(
+      changeApplicantsStatus({ applicantId, jobId, applicationStatus })
+    );
+    console.log(response, 'rrrrrrrrr');
+  };
+
   const classes = useStyles();
 
   return (
     <Container maxWidth="md" className={classes.container}>
+      <div className={classes.status}>
+        <InputLabel id="application-status-label">
+          Application Status
+        </InputLabel>
+        <Select
+          labelId="application-status-label"
+          value={applicationStatus}
+          onChange={handleStatusChange}
+        >
+          <MenuItem value="">Select Status</MenuItem>
+          <MenuItem value="Shortlisted">Shortlisted</MenuItem>
+          <MenuItem value="Rejected">Rejected</MenuItem>
+          <MenuItem value="Selected">Selected</MenuItem>
+        </Select>
+        <Button
+          variant="outlined"
+          className={classes.changeStatus}
+          onClick={handleStatusSubmit}
+        >
+          Save
+        </Button>
+      </div>
       <Avatar alt="Company Logo" className={classes.logo} />
       <Grid container direction="column" spacing={2}>
         <Grid item className={classes.jobTitleContainer}>
@@ -103,6 +163,7 @@ const ApplicantCard = (props) => {
           variant="outlined"
           startIcon={<EditIcon />}
           className={classes.editButton}
+          onClick={onCVClick}
         >
           View CV
         </Button>
@@ -119,6 +180,7 @@ const ApplicantCard = (props) => {
         variant="outlined"
         startIcon={<VideoCallIcon />}
         className={classes.applicationButton}
+        onClick={onVideoButtonClick}
       >
         SCHEDULE
       </Button>
@@ -131,7 +193,14 @@ ApplicantCard.propTypes = {
   email: PropTypes.string.isRequired,
   phoneNumber: PropTypes.string.isRequired,
   about: PropTypes.string.isRequired,
+  onChatButtonClick: PropTypes.func,
+  onCVClick: PropTypes.func,
+  onVideoButtonClick: PropTypes.func,
+  onChangeStatusClick: PropTypes.func,
+  applicantId: PropTypes.string.isRequired,
+  jobId: PropTypes.string.isRequired,
 };
+
 ApplicantCard.defaultProps = {
   name: '',
   email: '',

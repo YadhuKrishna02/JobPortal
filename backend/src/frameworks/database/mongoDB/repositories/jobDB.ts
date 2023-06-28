@@ -1,7 +1,8 @@
 import Job from '../models/jobModel';
+import UserProfile from '../models/userProfile';
 import { JobInterface } from '../../../../types/jobInterface';
 import { AllJobs } from '../../../../application/use-cases/job/job';
-import { Types } from 'mongoose';
+import { FilterQuery, Types } from 'mongoose';
 
 export const jobDB = () => {
   //add user
@@ -42,7 +43,30 @@ export const jobDB = () => {
   };
   const getJobByRecId = async (recId: string) => {
     const jobs = await Job.find({ recruiterId: recId });
+    console.log(jobs, 'jobsFramee');
+
     return jobs;
+  };
+
+  const getFilteredJobs = async (query: FilterQuery<JobInterface>) => {
+    const filteredJobs = await Job.find(query);
+    return filteredJobs;
+  };
+
+  const changeStatus = async (
+    jobId: string,
+    applicantId: string,
+    status: string
+  ) => {
+    const statusResponse = await UserProfile.findOneAndUpdate(
+      {
+        _id: applicantId,
+        'appliedJobs._id': jobId,
+      },
+      { $set: { 'appliedJobs.$.status': status } },
+      { new: true }
+    );
+    return statusResponse;
   };
   return {
     addJob,
@@ -52,6 +76,8 @@ export const jobDB = () => {
     getApplicants,
     getAllJobs,
     getJobByRecId,
+    getFilteredJobs,
+    changeStatus,
   };
 };
 

@@ -11,6 +11,10 @@ import { recProfileDbInterface } from '../../application/repositories/recruiterP
 import { recProfileDb } from '../../frameworks/database/mongoDB/repositories/recruiterProfile';
 import { applicantDetails } from '../../application/use-cases/recruiter/recruiter';
 import { ProfileEdit } from '../../application/use-cases/recruiter/recruiter';
+import { nodeMailerServiceInterface } from '../../application/services/nodeMailerInterface';
+import { nodemailerserviceimple } from '../../frameworks/services/nodeMailer';
+import { SendInterviewLink } from '../../application/use-cases/recruiter/recruiter';
+import { ChangeStatus } from '../../application/use-cases/recruiter/recruiter';
 import { ViewJob } from '../../application/use-cases/job/job';
 import { Types } from 'mongoose';
 
@@ -18,10 +22,13 @@ const jobController = (
   jobInterface: JobDbInterface,
   jobDbImpl: jobDB,
   recProfileInterface: recProfileDbInterface,
-  recProfileImpl: recProfileDb
+  recProfileImpl: recProfileDb,
+  nodeMailerInterface: nodeMailerServiceInterface,
+  nodeMailerService: nodemailerserviceimple
 ) => {
   const dbRepositoryJob = jobInterface(jobDbImpl());
   const dbRepositoryRecProfile = recProfileInterface(recProfileImpl());
+  const nodemailer = nodeMailerInterface(nodeMailerService());
 
   //post job
   const postJob = asyncHandler(async (req: Request, res: Response) => {
@@ -110,6 +117,34 @@ const jobController = (
     });
   });
 
+  //send interview link
+
+  const sendInterviewLink = asyncHandler(
+    async (req: Request, res: Response) => {
+      const linkData = req.body;
+      const sendLink = await SendInterviewLink(linkData, nodemailer);
+      console.log(sendLink, 'linkkkkkkkk');
+    }
+  );
+
+  //change status
+
+  const changeStatus = asyncHandler(async (req: Request, res: Response) => {
+    const { jobId, applicantId, status } = req.query;
+
+    const statusChange: any = await ChangeStatus(
+      jobId,
+      applicantId,
+      status,
+      dbRepositoryJob
+    );
+
+    res.json({
+      status: 'success',
+      message: 'status changed',
+    });
+  });
+
   return {
     postJob,
     editJob,
@@ -117,6 +152,8 @@ const jobController = (
     getApplicants,
     editProfile,
     viewJob,
+    sendInterviewLink,
+    changeStatus,
   };
 };
 

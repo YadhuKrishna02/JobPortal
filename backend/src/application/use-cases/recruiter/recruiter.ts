@@ -1,8 +1,10 @@
 import { HttpStatus } from '../../../types/httpStatus';
 import AppError from '../../../utils/appError';
 import { JobDbInterface } from '../../repositories/jobDbInterface';
+import { nodeMailerServiceInterface } from '../../services/nodeMailerInterface';
 import { recProfileDbInterface } from '../../repositories/recruiterProfileInterface';
 import { recruiterProfileInterface } from '../../../types/recrProfileInterface';
+import { nodeMailerInterface } from '../../services/nodeMailerInterface';
 
 import mongoose, { Types } from 'mongoose';
 
@@ -36,4 +38,33 @@ export const ProfileEdit = async (
   // console.log(recruiterProfile, 'seddd');
 
   // return recruiterProfile;
+};
+
+export const SendInterviewLink = async (
+  linkData: {
+    email: string;
+    firstName: string;
+    roomId: string;
+  },
+  nodeMailerRepository: ReturnType<nodeMailerServiceInterface>
+) => {
+  return await nodeMailerRepository.emailVerification(
+    linkData.email,
+    linkData.firstName,
+    linkData.roomId
+  );
+};
+
+export const ChangeStatus = async (
+  jobId: any,
+  appplicantId: any,
+  status: any,
+  jobRepository: ReturnType<JobDbInterface>
+) => {
+  const statusResponse = await jobRepository.statusChange(
+    jobId,
+    appplicantId,
+    status
+  );
+  return statusResponse;
 };

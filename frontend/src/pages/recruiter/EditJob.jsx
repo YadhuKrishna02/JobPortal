@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 import { EditJob } from '../../redux/recruiter/jobSlice';
 import { toast } from 'react-hot-toast';
+import { getJobById } from '../../redux/recruiter/jobSlice';
 
 import {
   TextField,
@@ -46,36 +47,60 @@ const validationSchema = Yup.object({
 const JobPostForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [jobs, setJobs] = useState([]);
+  const [filteredJobs, setFilteredjobs] = useState([]);
   const { id } = useParams();
-
-  const jobs = useSelector((state) => state?.jobs?.jobs);
+  const recruiterId = useSelector(
+    (state) => state?.recruiters?.recruiters?.recruiterData?._id
+  );
+  useEffect(() => {
+    const getJobs = async () => {
+      try {
+        const response = await dispatch(getJobById(recruiterId));
+        console.log(response?.payload, 'oooooo');
+        setJobs(response?.payload);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getJobs();
+  }, [dispatch, recruiterId]);
+  console.log(jobs, 'jobbbbbbbb');
 
   useEffect(() => {
-    setSkills(filteredJobs[0]?.job?.skills || []);
+    const jobsFilter =
+      jobs &&
+      jobs.filter(
+        (job) => job?.jobTitle.toLowerCase().split(' ').join('-') === id
+      );
+    console.log(jobsFilter, 'kkkkkkkkkkkk');
+    setFilteredjobs(jobsFilter);
+  }, [jobs]);
+  console.log(filteredJobs, 'filllllllll');
+
+  useEffect(() => {
+    setSkills(filteredJobs[0]?.skills || []);
   }, []);
 
-  const filteredJobs = jobs.filter(
-    (job) => job?.job?.jobTitle.toLowerCase().split(' ').join('-') === id
-  );
-
-  const jobId = filteredJobs[0]?.job._id;
-  const date = filteredJobs[0]?.job?.deadline;
+  const jobId = filteredJobs[0]?._id;
+  const date = filteredJobs[0]?.deadline;
   const deadline = dayjs(date).format('YYYY-MM-DD');
 
   const classes = useStyles();
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      jobTitle: filteredJobs[0]?.job?.jobTitle || '',
-      jobLocation: filteredJobs[0]?.job?.jobLocation || '',
-      jobType: filteredJobs[0]?.job?.jobType || '',
-      qualification: filteredJobs[0]?.job?.qualification || '',
-      jobVacancies: filteredJobs[0]?.job?.jobVacancies || '',
-      salary: filteredJobs[0]?.job?.salary || '',
-      jobTiming: filteredJobs[0]?.job?.jobTiming || '',
-      experience: filteredJobs[0]?.job?.experience || '',
-      about: filteredJobs[0]?.job?.about || '',
-      essentialKnowledge: filteredJobs[0]?.job?.essentialKnowledge || '',
-      skills: filteredJobs[0]?.job?.skills || [],
+      jobTitle: filteredJobs[0]?.jobTitle || '',
+      jobLocation: filteredJobs[0]?.jobLocation || '',
+      jobType: filteredJobs[0]?.jobType || '',
+      qualification: filteredJobs[0]?.qualification || '',
+      jobVacancies: filteredJobs[0]?.jobVacancies || '',
+      salary: filteredJobs[0]?.salary || '',
+      jobTiming: filteredJobs[0]?.jobTiming || '',
+      experience: filteredJobs[0]?.experience || '',
+      about: filteredJobs[0]?.about || '',
+      essentialKnowledge: filteredJobs[0]?.essentialKnowledge || '',
+      skills: filteredJobs[0]?.skills || [],
       deadline: deadline || '',
     },
     validationSchema,

@@ -16,10 +16,10 @@ import LoginModal from '../Modals/LoginModal';
 import RegisterModal from '../Modals/RegisterModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../redux/user/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import ChatIcon from '@mui/icons-material/Chat';
 
-const pages = ['Jobs'];
 const settings = ['Profile', 'Logout', 'Register', 'Login'];
 
 function Navbar() {
@@ -133,11 +133,11 @@ function Navbar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">
+                  <ChatIcon />
+                </Typography>
+              </MenuItem>
             </Menu>
           </Box>
 
@@ -162,20 +162,19 @@ function Navbar() {
             Job Zen
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{
-                  my: 2,
-                  color: '#19376D',
-                  display: 'block',
-                  md: 'flex',
-                }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Typography
+              onClick={handleCloseNavMenu}
+              component={Link}
+              to="/chat"
+              sx={{
+                my: 2,
+                color: '#19376D',
+                display: 'block',
+                md: 'flex',
+              }}
+            >
+              <ChatIcon sx={{ mr: 1, mt: 1 }} />
+            </Typography>
           </Box>
 
           {/* Authentication Buttons */}

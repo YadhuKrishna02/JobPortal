@@ -1,8 +1,9 @@
 import { HttpStatus } from '../../../types/httpStatus';
 import AppError from '../../../utils/appError';
 import { JobDbInterface } from '../../repositories/jobDbInterface';
+import { JobInterface } from '../../../types/jobInterface';
 import { applicantDbInterface } from '../../repositories/applicantDbInterface';
-import mongoose, { Types } from 'mongoose';
+import mongoose, { FilterQuery, Types } from 'mongoose';
 
 export const createJob = async (
   job: {
@@ -76,10 +77,20 @@ export const AllJobs = async (jobRepository: ReturnType<JobDbInterface>) => {
   return allJobs;
 };
 
+export const FilteredJobs = async (
+  query: FilterQuery<JobInterface>,
+  jobRepository: ReturnType<JobDbInterface>
+) => {
+  const filteredJobs = await jobRepository.getFilteredJobs(query);
+  return filteredJobs;
+};
+
 export const ViewJob = async (
   recId: string,
   jobRepository: ReturnType<JobDbInterface>
 ) => {
   const job = await jobRepository.getJobByRecId(recId);
+  console.log(job, 'jooo');
+
   return job;
 };

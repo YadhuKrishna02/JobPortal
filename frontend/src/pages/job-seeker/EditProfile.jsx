@@ -184,7 +184,11 @@ const ProfilePage = () => {
                 </Button>
               </ListItem>
               <ListItem sx={{ justifyContent: 'center' }}>
-                <Button startIcon={<AssignmentIcon />}>
+                <Button
+                  component={Link}
+                  to="/applied_jobs"
+                  startIcon={<AssignmentIcon />}
+                >
                   <ListItemText primary="Applied Jobs" />
                 </Button>
               </ListItem>

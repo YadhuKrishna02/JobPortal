@@ -41,5 +41,15 @@ export const AppliedJobs = async (
   dbRepositoryProfile: ReturnType<profileDbInterface>
 ) => {
   const appliedJobs = await dbRepositoryProfile.getAppliedJobs(profileId);
+  console.log(appliedJobs, 'sujithhh');
+
   return appliedJobs;
+};
+
+export const GetStatus = async (
+  applicantId: string | any,
+  jobId: string | any,
+  dbRepositoryProfile: ReturnType<profileDbInterface>
+) => {
+  return await dbRepositoryProfile.getStatus(applicantId, jobId);
 };

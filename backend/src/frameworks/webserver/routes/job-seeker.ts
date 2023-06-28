@@ -30,6 +30,10 @@ const userRouter = () => {
 
   router.get('/all_jobs', controller.allJobs);
 
+  router.get('/filter_jobs', controller.filteredJobs);
+
+  router.get('/fetch_status', controller.getStatus);
+
   return router;
 };
 

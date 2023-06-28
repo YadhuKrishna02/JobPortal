@@ -27,7 +27,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
+    if (receivedMessage !== null && receivedMessage?.chatId === chat?._id) {
       setMessages([...messages, receivedMessage]);
     }
   }, [receivedMessage]);
@@ -38,8 +38,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
     const getUserData = async () => {
       try {
         const data = await dispatch(getUsers(userId));
-
-        setUserData(data);
+        setUserData(data?.payload?.data?.userProfile);
       } catch (error) {
         console.log(error);
       }
@@ -80,7 +79,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
     setSendMessage({ ...message, receiverId });
     try {
       const data = await dispatch(addMessage(message));
-      console.log(data, 'lololololoioioio');
       setMessages([...messages, data?.payload]);
       setNewMessage('');
     } catch {
@@ -89,7 +87,6 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
   };
 
   // Receive Message from parent component
-  console.log(messages, 'msgsssssssss');
   const scroll = useRef();
   // const imageRef = useRef();
   return (
@@ -107,7 +104,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                       fontWeight="500"
                       sx={{ padding: '1rem' }}
                     >
-                      {userData?.userName}
+                      {userData?.firstName
+                        ? userData?.firstName
+                        : userData?.userName}
                     </Typography>
                   </Box>
                   <Box></Box>

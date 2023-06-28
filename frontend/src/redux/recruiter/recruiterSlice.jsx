@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authApi from '../../common/apis/authApi';
 import recruiterApi from '../../common/apis/recruiterApi';
+import { toast } from 'react-hot-toast';
 
 export const addAsyncRecruiter = createAsyncThunk(
   'recruiters/addAsyncRecruiter',
@@ -53,6 +54,23 @@ export const viewApplicants = createAsyncThunk(
       const response = await recruiterApi.get(`/applicants_list/${jobId}`);
 
       return response.data;
+    } catch (error) {
+      // Handle error
+      return error?.response?.data?.message; // Throw the error to be caught in the .catch() block
+    }
+  }
+);
+export const changeApplicantsStatus = createAsyncThunk(
+  'recruiters/changeApplicantsStatus',
+  async ({ jobId, applicantId, applicationStatus }) => {
+    try {
+      const response = await recruiterApi.post(
+        `/change_applicant_status/?jobId=${jobId}&applicantId=${applicantId}&status=${applicationStatus}`
+      );
+
+      if (response?.data?.status == 'success') {
+        toast.success('Status changed successfully');
+      }
     } catch (error) {
       // Handle error
       return error?.response?.data?.message; // Throw the error to be caught in the .catch() block

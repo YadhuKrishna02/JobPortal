@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import ProfilePage from '../pages/recruiter/Profile';
 import ApplicantsList from '../pages/recruiter/ApplicantsList';
 import ChatPage from '../pages/Chat/Chat';
+import CallPage from '../pages/Call/Call';
 function AdminRoutes() {
   const token = useSelector((state) => state?.recruiters?.recruiters?.token);
   const isLargeDevice = useMediaQuery('(min-width: 1280px)');
@@ -49,6 +50,10 @@ function AdminRoutes() {
             <Route
               path="/chat/"
               element={token ? <ChatPage /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/room/:roomId"
+              element={token ? <CallPage /> : <Navigate to="/" />}
             />
             <Route
               path="/profile"

@@ -41,6 +41,9 @@ dependencies:
   '@reduxjs/toolkit':
     specifier: ^1.9.5
     version: 1.9.5(react-redux@8.0.5)(react@18.2.0)
+  '@zegocloud/zego-uikit-prebuilt':
+    specifier: ^1.8.5
+    version: 1.8.5
   axios:
     specifier: ^1.4.0
     version: 1.4.0
@@ -86,6 +89,9 @@ dependencies:
   react-loading-skeleton:
     specifier: ^3.3.1
     version: 3.3.1(react@18.2.0)
+  react-mic:
+    specifier: ^12.4.6
+    version: 12.4.6(prop-types@15.8.1)(react@18.2.0)
   react-redux:
     specifier: ^8.0.5
     version: 8.0.5(@types/react-dom@18.0.11)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1)
@@ -1931,6 +1937,10 @@ packages:
       - supports-color
     dev: true
 
+  /@zegocloud/zego-uikit-prebuilt@1.8.5:
+    resolution: {integrity: sha512-TXRItkf60tGZP2+o2hf+d619OqDaPpjt/Xv66M9WPagCGFiWDT1gzjfE0bLq5wcXk4Fe9sJZ6tdYiXO89bduOg==}
+    dev: false
+
   /acorn-jsx@5.3.2(acorn@8.8.2):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
@@ -3495,6 +3505,16 @@ packages:
     resolution: {integrity: sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==}
     dev: false
 
+  /react-ga@2.7.0(prop-types@15.8.1)(react@18.2.0):
+    resolution: {integrity: sha512-AjC7UOZMvygrWTc2hKxTDvlMXEtbmA0IgJjmkhgmQQ3RkXrWR11xEagLGFGaNyaPnmg24oaIiaNPnEoftUhfXA==}
+    peerDependencies:
+      prop-types: ^15.6.0
+      react: ^15.6.2 || ^16.0
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
   /react-hot-toast@2.4.1(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==}
     engines: {node: '>=10'}
@@ -3538,6 +3558,17 @@ packages:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
+    dev: false
+
+  /react-mic@12.4.6(prop-types@15.8.1)(react@18.2.0):
+    resolution: {integrity: sha512-2/DZoz7thR2nJyekF10zBvs/7a8HhUQ4L8MV6BpC+Q/T8G1MvpRHGSHjSlVtnbzaCMDJ3R1MdThoLu15WuVh/g==}
+    peerDependencies:
+      prop-types: ^15.5.10
+      react: 16.x
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-ga: 2.7.0(prop-types@15.8.1)(react@18.2.0)
     dev: false
 
   /react-redux@8.0.5(@types/react-dom@18.0.11)(@types/react@18.0.28)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.1):
