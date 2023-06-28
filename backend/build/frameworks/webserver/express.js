@@ -21,13 +21,13 @@ const expressConfig = (app) => {
     app.use((0, morgan_1.default)('dev'));
     app.use((0, cookie_session_1.default)({
         name: 'session',
-        keys: ['blah'],
+        keys: ['1234'],
         maxAge: 24 * 60 * 60 * 1000, // 24 hours
     }));
     app.use(passport_1.default.initialize());
     app.use(passport_1.default.session());
     const corsOptions = {
-        origin: 'http://localhost:5173',
+        origin: '*',
         exposedHeaders: [
             'Cross-Origin-Opener-Policy',
             'Cross-Origin-Resource-Policy',

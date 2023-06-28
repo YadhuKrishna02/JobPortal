@@ -19,7 +19,7 @@ const expressConfig = (app: Application) => {
   app.use(
     cookieSession({
       name: 'session',
-      keys: ['blah'],
+      keys: ['1234'],
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     })
   );
@@ -27,7 +27,7 @@ const expressConfig = (app: Application) => {
   app.use(passport.session());
 
   const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: '*',
     exposedHeaders: [
       'Cross-Origin-Opener-Policy',
       'Cross-Origin-Resource-Policy',
