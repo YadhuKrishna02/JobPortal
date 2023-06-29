@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Typography, CircularProgress } from '@material-ui/core';
 import JobContainer from '../../components/Home/AppliedJobsCard';
@@ -12,21 +12,26 @@ const JobList = () => {
 
   const [applying, setApplying] = useState(false); // Loading state for job application
 
-  const applicantId = useSelector((state) => state?.users?.users?.applicantId);
+  const applicantId = useSelector((state) => state?.users?.profile?._id);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const getJobs = async () => {
       try {
         console.log('entereddddddddd');
+        setApplying(true); // Set applying state to true
         const response = await dispatch(getAppliedJobs(applicantId));
         console.log(response, 'qqqqqqqqqqq');
       } catch (error) {
         console.log(error);
+      } finally {
+        setApplying(false); // Set applying state back to false
       }
     };
+
     getJobs();
   }, [dispatch, applicantId]);
+
   const jobs = useSelector((state) => state?.appliedJobs?.currentApplied);
   console.log(jobs, 'applyyyyyyyy');
 
@@ -57,14 +62,14 @@ const JobList = () => {
       {displayJobs?.length > 0 ? (
         displayJobs?.map((job) => (
           <JobContainer
-            key={job._id}
-            jobLocation={job.jobLocation}
-            requiredSkills={job.skills}
-            jobTitle={job.jobTitle}
-            jobDescription={job.essentialKnowledge}
-            salaryPackage={job.salary}
-            jobId={job._id}
-            timeAgo={job.createdAt}
+            key={job?._id}
+            jobLocation={job?.jobLocation}
+            requiredSkills={job?.skills}
+            jobTitle={job?.jobTitle}
+            jobDescription={job?.essentialKnowledge}
+            salaryPackage={job?.salary}
+            jobId={job?._id}
+            timeAgo={job?.createdAt}
           />
         ))
       ) : (
