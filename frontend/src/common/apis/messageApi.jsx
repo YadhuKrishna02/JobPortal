@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const messageApi = axios.create({
-  baseURL: 'http://localhost:5000/api/message',
+  baseURL: 'https://jobzen.online',
 });
 
 // myAxios.interceptors.request.use(

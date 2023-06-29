@@ -18,6 +18,7 @@ const JobList = () => {
   useEffect(() => {
     const getJobs = async () => {
       try {
+        console.log('entereddd');
         setApplying(true); // Set applying state to true
         const response = await dispatch(getAppliedJobs(applicantId));
       } catch (error) {
@@ -28,7 +29,7 @@ const JobList = () => {
     };
 
     getJobs();
-  }, [dispatch]);
+  }, [dispatch, applicantd]);
 
   const jobs = useSelector((state) => state?.appliedJobs?.currentApplied);
   console.log(jobs, 'applyyyyyyyy');

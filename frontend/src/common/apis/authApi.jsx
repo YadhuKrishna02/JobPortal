@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const myAxios = axios.create({
-  baseURL: 'http://localhost:5000/api/auth',
+  baseURL: 'https://jobzen.online',
 });
 
 myAxios.interceptors.request.use(
