@@ -11,10 +11,10 @@ import {
   List,
   ListItem,
   ListItemText,
-  IconButton,
-  Avatar,
+  // IconButton,
+  // Avatar,
 } from '@mui/material';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+// import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useDropzone } from 'react-dropzone';
@@ -47,7 +47,7 @@ const ProfilePage = () => {
 
   const profileId = useSelector((state) => state?.users?.users?.applicantId);
   const [profileData, setProfileData] = useState(null);
-  const [profilePicture, setProfilePicture] = useState(null);
+  // const [profilePicture, setProfilePicture] = useState(null);
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -65,10 +65,10 @@ const ProfilePage = () => {
     setFieldValue('resume', acceptedFiles[0]);
     setSelectedFile(acceptedFiles[0]);
   };
-  const handleProfilePictureChange = (event) => {
-    const file = event.target.files[0];
-    setProfilePicture(file);
-  };
+  // const handleProfilePictureChange = (event) => {
+  //   const file = event.target.files[0];
+  //   setProfilePicture(file);
+  // };
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const navigate = useNavigate();
@@ -115,9 +115,9 @@ const ProfilePage = () => {
           // If a new resume file has been selected, append it to the form data
           formData.append('resume', values.resume);
         }
-        if (profilePicture) {
-          formData.append('profilePicture', profilePicture);
-        }
+        // if (profilePicture) {
+        //   formData.append('profilePicture', profilePicture);
+        // }
         formData.append('firstName', values.firstName);
         formData.append('lastName', values.lastName);
         formData.append('email', values.email);
@@ -225,7 +225,7 @@ const ProfilePage = () => {
           <Paper elevation={3} sx={{ padding: '20px' }}>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <Typography variant="subtitle1" gutterBottom>
                     Profile Picture:
                   </Typography>
@@ -249,7 +249,7 @@ const ProfilePage = () => {
                       <PhotoCameraIcon />
                     </IconButton>
                   </label>
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12} sm={6}>
                   <TextField

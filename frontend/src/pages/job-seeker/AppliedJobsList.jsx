@@ -18,10 +18,8 @@ const JobList = () => {
   useEffect(() => {
     const getJobs = async () => {
       try {
-        console.log('entereddddddddd');
         setApplying(true); // Set applying state to true
         const response = await dispatch(getAppliedJobs(applicantId));
-        console.log(response, 'qqqqqqqqqqq');
       } catch (error) {
         console.log(error);
       } finally {
@@ -30,7 +28,7 @@ const JobList = () => {
     };
 
     getJobs();
-  }, [dispatch, applicantId]);
+  }, [dispatch]);
 
   const jobs = useSelector((state) => state?.appliedJobs?.currentApplied);
   console.log(jobs, 'applyyyyyyyy');
@@ -61,6 +59,7 @@ const JobList = () => {
         </div>
       )}
       {displayJobs?.length > 0 ? (
+        displayJobs &&
         displayJobs?.map((job) => (
           <JobContainer
             key={job?._id}
