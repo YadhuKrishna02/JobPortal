@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const chatApi = axios.create({
-  baseURL: 'https://jobzen.online',
+  baseURL: 'https://jobzen.online/api/chat',
 });
 
 // myAxios.interceptors.request.use(

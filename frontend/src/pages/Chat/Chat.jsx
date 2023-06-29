@@ -41,7 +41,7 @@ const Chat = () => {
 
   // Connect to Socket.io
   useEffect(() => {
-    socket.current = io('ws://localhost:5000');
+    socket.current = io('https://jobzen.online');
     socket.current.emit('new-user-add', Id);
     socket.current.on('get-users', (users) => {
       setOnlineUsers(users);
