@@ -39,7 +39,8 @@ const JobList = () => {
     setPage(newPage);
   };
 
-  const displayJobs = jobs?.slice((page - 1) * rowsPerPage, page * rowsPerPage);
+  const displayJobs =
+    jobs && jobs?.slice((page - 1) * rowsPerPage, page * rowsPerPage);
 
   return (
     <>
