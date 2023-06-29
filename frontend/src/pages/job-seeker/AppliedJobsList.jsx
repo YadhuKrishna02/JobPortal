@@ -29,7 +29,7 @@ const JobList = () => {
     };
 
     getJobs();
-  }, [dispatch, applicantd]);
+  }, [dispatch, applicantId]);
 
   const jobs = useSelector((state) => state?.appliedJobs?.currentApplied);
   console.log(jobs, 'applyyyyyyyy');
