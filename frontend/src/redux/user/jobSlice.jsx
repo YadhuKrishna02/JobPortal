@@ -60,7 +60,7 @@ export const fetchStatus = createAsyncThunk(
 
 const initialState = {
   appliedJobs: [],
-  currentApplied: {},
+  currentApplied: [],
   jobs: {},
   filteredJobs: {},
   error: {},
@@ -79,7 +79,7 @@ const appliedJobSlice = createSlice({
         state.jobs = payload;
       })
       .addCase(getAppliedJobs.fulfilled, (state, { payload }) => {
-        state.currentApplied = payload;
+        state.currentApplied.push(payload);
       })
       .addCase(ApplyJob.rejected, (state, { error }) => {
         // state.error = error?.message || 'Unknown error occured';
