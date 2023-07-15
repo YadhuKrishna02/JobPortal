@@ -16,11 +16,15 @@ const JobList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    let didCancel = false;
     const getJobs = async () => {
       try {
         console.log('entereddd');
         setApplying(true); // Set applying state to true
-        const response = await dispatch(getAppliedJobs(applicantId));
+        if (!didCancel) {
+          const response = await dispatch(getAppliedJobs(applicantId));
+          console.log(response);
+        }
       } catch (error) {
         console.log(error);
       } finally {
@@ -29,7 +33,10 @@ const JobList = () => {
     };
 
     getJobs();
-  }, [dispatch, applicantId]);
+    return () => {
+      didCancel = true;
+    };
+  }, []);
 
   const jobs = useSelector((state) => state?.appliedJobs?.currentApplied);
   console.log(jobs, 'applyyyyyyyy');
