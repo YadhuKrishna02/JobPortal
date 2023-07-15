@@ -12,7 +12,7 @@ const JobList = () => {
 
   const [applying, setApplying] = useState(false); // Loading state for job application
 
-  const applicantId = useSelector((state) => state?.users?.users?.applicantId);
+  const applicantId = useSelector((state) => state?.users?.profile?._id);
   console.log(applicantId, 'appliIddddddddddddd');
   const dispatch = useDispatch();
 
